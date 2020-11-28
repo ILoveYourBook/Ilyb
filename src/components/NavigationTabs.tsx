@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Tab, Tabs, TabHeading, Icon } from 'native-base';
 import Home from './Home';
 import Profile from './Profile';
+import Chat from './Chat';
+
 export default class NavigationTabs extends Component {
   render() {
     return (
@@ -13,7 +15,7 @@ export default class NavigationTabs extends Component {
               <Home/>
           </Tab>
           <Tab heading={ <TabHeading><Icon name='chat-bubble' type="MaterialIcons" /></TabHeading>}>
-              <Home/>
+              <Chat/>
           </Tab>
         </Tabs>
     );
