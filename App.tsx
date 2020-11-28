@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import LoadingScreen from './src/components/LoadingScreen';
-import Home from './src/components/Home';
+import NavigationTabs from './src/components/NavigationTabs';
 
 const App = () => {
   return (
@@ -14,10 +14,10 @@ const App = () => {
           initial
         />
         <Scene
-          key="home"
-          component={Home}
+          key="nav"
+          component={NavigationTabs}
           hideNavBar={true}
-          title="Home"
+          title="NavigationTabs"
         />
       </Scene>
     </Router>
