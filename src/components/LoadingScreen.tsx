@@ -23,7 +23,7 @@ const LoadingScreen = () => {
         duration: 2000,
         useNativeDriver: true
       },
-    ).start(() => Actions.home());
+    ).start(() => Actions.nav());
   }, [fadeAnim])
 
   return (
