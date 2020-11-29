@@ -31,7 +31,7 @@ const Profile = () => {
         <Row size={0.25} style={{alignItems: 'center', justifyContent: "center"}}>
           <Col>
             <Button style={{backgroundColor: 'darkcyan',width: 320, alignSelf: 'center', flexDirection: "row", justifyContent: "center", margin: 5}}>
-              <Text>My books</Text>
+              <Text>Edit Profile</Text>
             </Button>
             <Button danger style={{width: 320, alignSelf: 'center', flexDirection: "row", justifyContent: "center", margin: 5}}>
               <Text>Log out</Text>
