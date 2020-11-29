@@ -7,7 +7,7 @@ import Chat from './Chat';
 export default class NavigationTabs extends Component {
   render() {
     return (
-        <Tabs>
+        <Tabs locked>
           <Tab heading={ <TabHeading><Icon name='account-circle' type="MaterialIcons" /></TabHeading>}>
               <Profile/>
           </Tab>
