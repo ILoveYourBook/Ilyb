@@ -5,16 +5,14 @@ const books = [
   {
 	name: 'La Sombra del Viento',
 	author: 'Carlos Ruiz Zafón',
-	text: 'La Sombra del Viento',
 	genres: 'Drama, Mistery',
     image: require('../assets/la-sombra.jpg'),
   },
   {
-    text: 'Card One',
-	author: 'Carlos Ruiz Zafón',
-    name: 'One',
-	genres: 'Drama, Mistery',
-    image: require('../assets/la-sombra.jpg'),
+    name: 'The Fellowship of the Ring',
+	author: 'J.R.R. Tolkien',
+	genres: 'Fantasy, Adventure',
+    image: require('../assets/fellowship.jpg'),
   },
 ];
 export default class BookCardSwiper extends Component {
