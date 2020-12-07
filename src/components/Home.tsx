@@ -1,4 +1,4 @@
-import {Button, Icon, Text, View} from 'native-base';
+import {Button, Icon, View} from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {BookCardSwiper} from './BookCardSwiper';
@@ -22,10 +22,6 @@ const Home = () => {
   return (
     <>
       <BookCardSwiper books={books} />
-      <Button style={styles.infoBtn}>
-        <Icon name="info" type="MaterialIcons" style={styles.infoIcon} />
-        <Text>More Information</Text>
-      </Button>
       <View style={styles.mainView}>
         <Button style={styles.passBtn}>
           <Icon style={styles.passIcon} name="clear" type="MaterialIcons" />
@@ -43,14 +39,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 20,
-  },
-  infoBtn: {
-    width: 200,
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-  infoIcon: {
-    marginRight: 0,
   },
   passBtn: {
     justifyContent: 'center',

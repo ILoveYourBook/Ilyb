@@ -1,11 +1,12 @@
 import React from 'react';
 import {
   Body,
+  Button,
   Card,
   CardItem,
   Container,
   DeckSwiper,
-  Left,
+  Icon,
   Text,
 } from 'native-base';
 import {Image, StyleSheet} from 'react-native';
@@ -25,13 +26,18 @@ export const BookCardSwiper: React.FunctionComponent<Props> = ({books}) => {
               <Image style={styles.cardImg} source={item.image} />
             </CardItem>
             <CardItem style={styles.cardInfo}>
-              <Left>
-                <Body>
-                  <Text>{item.name}</Text>
-                  <Text>{item.author}</Text>
-                  <Text note>{item.genres}</Text>
-                </Body>
-              </Left>
+              <Body>
+                <Text>{item.name}</Text>
+                <Text>{item.author}</Text>
+                <Text note>{item.genres}</Text>
+              </Body>
+              <Button style={styles.infoBtn}>
+                <Icon
+                  name="info"
+                  type="MaterialIcons"
+                  style={styles.infoIcon}
+                />
+              </Button>
             </CardItem>
           </Card>
         )}
@@ -58,5 +64,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     opacity: 0.9,
+  },
+  infoBtn: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+  },
+  infoIcon: {
+    fontSize: 30,
+    marginLeft: 0,
+    marginRight: 0,
   },
 });
