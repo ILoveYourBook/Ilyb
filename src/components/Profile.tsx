@@ -1,5 +1,4 @@
-import {User} from '@react-native-community/google-signin';
-import {Button, Col, Grid, Icon, Row, Text, Thumbnail, View} from 'native-base';
+import {Button, Col, Grid, H1, Icon, Row, Text, Thumbnail} from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
@@ -10,102 +9,87 @@ type Props = {
 const Profile = (props: Props) => {
   const user = props.user.user;
   const numberOfBooks = 21;
-  const numberOfMatches = 11;
   const userBiography =
     'This is my biography, where I should tell the people I match which are my interests in books.';
 
   return (
-    <>
-      <Grid>
-        <Row size={0.75} style={{alignItems: 'center'}}>
-          <Col style={{alignItems: 'center'}}>
-            <Thumbnail
-              style={{width: 200, height: 200}}
-              source={{uri: user.photo || ''}}
-            />
-            <Text style={{fontSize: 30, marginTop: 10}}>{user.name}</Text>
-            <Text style={{fontSize: 20, margin: 5, textAlign: 'center'}}>
-              {userBiography}
-            </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 15,
-              }}>
-              <Button
-                rounded
-                style={{
-                  width: 150,
-                  margin: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <Icon
-                  name="menu-book"
-                  type="MaterialIcons"
-                  style={{marginRight: 0}}
-                />
-                <Text>Books: {numberOfBooks}</Text>
-              </Button>
-              <Button
-                rounded
-                style={{
-                  backgroundColor: 'orange',
-                  width: 150,
-                  margin: 10,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                }}>
-                <Icon
-                  name="favorite"
-                  type="MaterialIcons"
-                  style={{marginRight: 0}}
-                />
-                <Text>Matches: {numberOfMatches}</Text>
-              </Button>
-            </View>
-          </Col>
-        </Row>
-        <Row
-          size={0.25}
-          style={{alignItems: 'center', justifyContent: 'center'}}>
-          <Col>
-            <Button
-              style={{
-                backgroundColor: 'darkcyan',
-                width: 320,
-                alignSelf: 'center',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                margin: 5,
-              }}>
-              <Text>Edit Profile</Text>
+    <Grid style={styles.mainGrid}>
+      <Row size={0.75}>
+        <Col style={styles.profileInfo}>
+          <Thumbnail
+            style={styles.avatar}
+            source={require('../assets/avatar.png')}
+          />
+          <H1>Francis Molina</H1>
+          <Text style={styles.bio}>{userBiography}</Text>
+          <Row>
+            <Button rounded style={styles.numberOfBooksBtn}>
+              <Icon
+                name="menu-book"
+                type="MaterialIcons"
+                style={styles.bookIcon}
+              />
+              <Text>Books: {numberOfBooks}</Text>
             </Button>
-            <Button
-              danger
-              style={{
-                width: 320,
-                alignSelf: 'center',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                margin: 5,
-              }}>
-              <Text>Log out</Text>
+
+            <Button success style={styles.addBookBtn}>
+              <Icon name="add" type="MaterialIcons" style={styles.addIcon} />
             </Button>
-          </Col>
-        </Row>
-      </Grid>
-    </>
+          </Row>
+        </Col>
+      </Row>
+      <Row size={0.25} style={styles.logOutBtnRow}>
+        <Button danger style={styles.logoutBtn}>
+          <Text>Log out</Text>
+        </Button>
+      </Row>
+    </Grid>
   );
 };
 
 const styles = StyleSheet.create({
-  mainView: {
-    justifyContent: 'center',
+  mainGrid: {
+    padding: 10,
   },
-  logo: {
-    width: 30,
+  avatar: {
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    margin: 20,
+  },
+  profileInfo: {
+    alignItems: 'center',
+  },
+  bio: {
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  numberOfBooksBtn: {
+    alignSelf: 'center',
+    margin: 5,
+  },
+  bookIcon: {
+    marginRight: 0,
+    marginLeft: 22,
+  },
+  addBookBtn: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    height: 40,
+    width: 40,
+  },
+  addIcon: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
+  logOutBtnRow: {
+    alignSelf: 'center',
+  },
+  logoutBtn: {
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    width: 320,
   },
 });
 
