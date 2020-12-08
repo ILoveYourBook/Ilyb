@@ -63,3 +63,4 @@ buck-out/
 /ios/Pods/
 
 .env.js
+google-services.json

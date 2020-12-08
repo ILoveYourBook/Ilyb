@@ -1,5 +1,5 @@
 {
-  "name": "Ilyb",
+  "name": "ilyb",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/google-signin": "^5.0.0",
     "native-base": "^2.13.14",
     "react": "16.13.1",
     "react-native": "^0.63.3",
