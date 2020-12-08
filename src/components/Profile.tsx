@@ -1,12 +1,19 @@
+import {User} from '@react-native-community/google-signin';
 import {Button, Col, Grid, Icon, Row, Text, Thumbnail, View} from 'native-base';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
-const Profile = () => {
+type Props = {
+  user: User;
+};
+
+const Profile = (props: Props) => {
+  const user = props.user.user;
   const numberOfBooks = 21;
   const numberOfMatches = 11;
   const userBiography =
     'This is my biography, where I should tell the people I match which are my interests in books.';
+
   return (
     <>
       <Grid>
@@ -14,9 +21,9 @@ const Profile = () => {
           <Col style={{alignItems: 'center'}}>
             <Thumbnail
               style={{width: 200, height: 200}}
-              source={require('../assets/avatar.png')}
+              source={{uri: user.photo || ''}}
             />
-            <Text style={{fontSize: 30, marginTop: 10}}>Francis Molina</Text>
+            <Text style={{fontSize: 30, marginTop: 10}}>{user.name}</Text>
             <Text style={{fontSize: 20, margin: 5, textAlign: 'center'}}>
               {userBiography}
             </Text>
