@@ -1,38 +1,43 @@
-import React, {Component} from 'react';
-import {Tab, Tabs, TabHeading, Icon} from 'native-base';
+import {User} from '@react-native-community/google-signin';
+import {Icon, Tab, TabHeading, Tabs} from 'native-base';
+import React from 'react';
+import Chat from './Chat';
 import Home from './Home';
 import Profile from './Profile';
-import Chat from './Chat';
 
-export default class NavigationTabs extends Component {
-  render() {
-    return (
-      <Tabs locked>
-        <Tab
-          heading={
-            <TabHeading>
-              <Icon name="account-circle" type="MaterialIcons" />
-            </TabHeading>
-          }>
-          <Profile />
-        </Tab>
-        <Tab
-          heading={
-            <TabHeading>
-              <Icon name="home" type="MaterialIcons" />
-            </TabHeading>
-          }>
-          <Home />
-        </Tab>
-        <Tab
-          heading={
-            <TabHeading>
-              <Icon name="chat-bubble" type="MaterialIcons" />
-            </TabHeading>
-          }>
-          <Chat />
-        </Tab>
-      </Tabs>
-    );
-  }
-}
+type Props = {
+  user: User;
+};
+
+const NavigationTabs = (props: Props) => {
+  return (
+    <Tabs locked>
+      <Tab
+        heading={
+          <TabHeading>
+            <Icon name="account-circle" type="MaterialIcons" />
+          </TabHeading>
+        }>
+        <Profile user={props.user} />
+      </Tab>
+      <Tab
+        heading={
+          <TabHeading>
+            <Icon name="home" type="MaterialIcons" />
+          </TabHeading>
+        }>
+        <Home />
+      </Tab>
+      <Tab
+        heading={
+          <TabHeading>
+            <Icon name="chat-bubble" type="MaterialIcons" />
+          </TabHeading>
+        }>
+        <Chat />
+      </Tab>
+    </Tabs>
+  );
+};
+
+export default NavigationTabs;
