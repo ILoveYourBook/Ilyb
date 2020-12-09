@@ -1,27 +1,23 @@
-import {Button, Icon, View} from 'native-base';
-import React from 'react';
+import {Button, Icon, Text, View} from 'native-base';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {BookCardSwiper} from './BookCardSwiper';
-
-const books = [
-  {
-    name: 'La Sombra del Viento',
-    author: 'Carlos Ruiz Zafón',
-    genres: 'Drama, Mistery',
-    image: require('../assets/la-sombra.jpg'),
-  },
-  {
-    name: 'The Fellowship of the Ring',
-    author: 'J.R.R. Tolkien',
-    genres: 'Fantasy, Adventure',
-    image: require('../assets/fellowship.jpg'),
-  },
-];
+import firestore from '@react-native-firebase/firestore';
 
 const Home = () => {
+  const [books, setBooks] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    async function getBooks() {
+      const ref = await firestore().collection('books').get();
+      const data = ref.docs.map((doc) => doc.data());
+      setBooks(data);
+    }
+  });
   return (
     <>
-      <BookCardSwiper books={books} />
+      {/* <BookCardSwiper books={books} /> */}
+      <Text>{books[0].name}</Text>
       <View style={styles.mainView}>
         <Button style={styles.passBtn}>
           <Icon style={styles.passIcon} name="clear" type="MaterialIcons" />

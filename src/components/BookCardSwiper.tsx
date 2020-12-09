@@ -23,13 +23,13 @@ export const BookCardSwiper: React.FunctionComponent<Props> = ({books}) => {
         renderItem={(item: any) => (
           <Card style={styles.card}>
             <CardItem cardBody>
-              <Image style={styles.cardImg} source={item.image} />
+              <Image style={styles.cardImg} source={item.images[0]} />
             </CardItem>
             <CardItem style={styles.cardInfo}>
               <Body>
                 <Text>{item.name}</Text>
                 <Text>{item.author}</Text>
-                <Text note>{item.genres}</Text>
+                <Text note>{item.genres[0]}</Text>
               </Body>
               <Button style={styles.infoBtn}>
                 <Icon
