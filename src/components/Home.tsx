@@ -1,27 +1,25 @@
-import {Button, Icon, Text, View} from 'native-base';
+import firestore from '@react-native-firebase/firestore';
+import {Button, Icon, View} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {BookCardSwiper} from './BookCardSwiper';
-import firestore from '@react-native-firebase/firestore';
+
+export type Book = {
+  name: string;
+  author: string;
+  images: Array<string>;
+  userId: string;
+};
 
 const Home = () => {
-  type Book = {
-    name: string;
-    author: string;
-    genres: Array<string>;
-    images: Array<string>;
-    userId: string;
-  };
+  const [books, setBooks] = useState<Array<Book>>();
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const data = await firestore().collection('books').get();
-        const arrayData = data.docs.map((doc) => {
-          doc.data().name);
-        });
+        const arrayData = data.docs.map((document) => document.data() as Book);
         setBooks(arrayData);
-        console.log(arrayData);
       } catch (error) {
         console.log(error);
       }
@@ -31,7 +29,7 @@ const Home = () => {
 
   return (
     <>
-      <BookCardSwiper books={books} />
+      {books ? <BookCardSwiper books={books} /> : null}
       <View style={styles.mainView}>
         <Button style={styles.passBtn}>
           <Icon style={styles.passIcon} name="clear" type="MaterialIcons" />

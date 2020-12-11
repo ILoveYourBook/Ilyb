@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Body,
   Button,
@@ -9,10 +8,12 @@ import {
   Icon,
   Text,
 } from 'native-base';
+import React from 'react';
 import {Image, StyleSheet} from 'react-native';
+import {Book} from './Home';
 
 export interface Props {
-  books: Array<any>;
+  books: Array<Book>;
 }
 
 export const BookCardSwiper: React.FunctionComponent<Props> = ({books}) => {
@@ -20,16 +21,15 @@ export const BookCardSwiper: React.FunctionComponent<Props> = ({books}) => {
     <Container style={styles.container}>
       <DeckSwiper
         dataSource={books}
-        renderItem={(item: any) => (
+        renderItem={(item: Book) => (
           <Card style={styles.card}>
             <CardItem cardBody>
-              <Image style={styles.cardImg} source={item.images} />
+              <Image style={styles.cardImg} source={{uri: item.images[0]}} />
             </CardItem>
             <CardItem style={styles.cardInfo}>
               <Body>
                 <Text>{item.name}</Text>
                 <Text>{item.author}</Text>
-                <Text note>{item.genres}</Text>
               </Body>
               <Button style={styles.infoBtn}>
                 <Icon
