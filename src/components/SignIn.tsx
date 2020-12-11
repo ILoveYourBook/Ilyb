@@ -1,21 +1,20 @@
 import {
   GoogleSignin,
   GoogleSigninButton,
+  User,
 } from '@react-native-community/google-signin';
-import React, {useEffect, useRef} from 'react';
-import {Animated, Image, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 const SignIn = () => {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 2000,
-      useNativeDriver: true,
-    });
-  }, [fadeAnim]);
+    if (user) {
+      Actions.nav({user});
+    }
+  }, [user]);
 
   return (
     <View style={styles.mainView}>
@@ -28,8 +27,8 @@ const SignIn = () => {
         size={GoogleSigninButton.Size.Wide}
         onPress={async () => {
           await GoogleSignin.hasPlayServices();
-          const user = await GoogleSignin.signIn();
-          Actions.nav({user});
+          const signedInUser = await GoogleSignin.signIn();
+          setUser(signedInUser);
         }}
       />
     </View>
