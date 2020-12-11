@@ -1,5 +1,6 @@
-import {Button, Col, Grid, H1, Icon, Row, Text, Thumbnail} from 'native-base';
 import React from 'react';
+import {User} from '@react-native-community/google-signin';
+import {Button, Col, Grid, H1, Icon, Row, Text, Thumbnail} from 'native-base';
 import {StyleSheet} from 'react-native';
 
 type Props = {
@@ -16,11 +17,8 @@ const Profile = (props: Props) => {
     <Grid style={styles.mainGrid}>
       <Row size={0.75}>
         <Col style={styles.profileInfo}>
-          <Thumbnail
-            style={styles.avatar}
-            source={require('../assets/avatar.png')}
-          />
-          <H1>Francis Molina</H1>
+          <Thumbnail style={styles.avatar} source={{uri: user.photo || ''}} />
+          <H1>{user.name}</H1>
           <Text style={styles.bio}>{userBiography}</Text>
           <Row>
             <Button rounded style={styles.numberOfBooksBtn}>
