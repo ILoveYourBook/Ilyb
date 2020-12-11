@@ -1,59 +1,81 @@
 import {
   Body,
+  Button,
   Card,
   CardItem,
   Container,
   DeckSwiper,
-  Left,
+  Icon,
   Text,
 } from 'native-base';
-import React, {Component} from 'react';
+import React from 'react';
 import {Image, StyleSheet} from 'react-native';
-const books = [
-  {
-    name: 'La Sombra del Viento',
-    author: 'Carlos Ruiz Zafón',
-    genres: 'Drama, Mistery',
-    image: require('../assets/la-sombra.jpg'),
-  },
-  {
-    name: 'The Fellowship of the Ring',
-    author: 'J.R.R. Tolkien',
-    genres: 'Fantasy, Adventure',
-    image: require('../assets/fellowship.jpg'),
-  },
-];
-export default class BookCardSwiper extends Component {
-  render() {
-    return (
-      <Container style={styles.container}>
-        <DeckSwiper
-          dataSource={books}
-          renderItem={(item: any) => (
-            <Card style={{elevation: 3, width: 300, height: 453}}>
-              <CardItem cardBody>
-                <Image style={{height: 453, flex: 1}} source={item.image} />
-              </CardItem>
-              <CardItem style={{position: 'absolute', bottom: 0, opacity: 0.9}}>
-                <Left>
-                  <Body>
-                    <Text>{item.name}</Text>
-                    <Text>{item.author}</Text>
-                    <Text note>{item.genres}</Text>
-                  </Body>
-                </Left>
-              </CardItem>
-            </Card>
-          )}
-        />
-      </Container>
-    );
-  }
+import {Book} from './Home';
+
+export interface Props {
+  books: Array<Book>;
 }
+
+export const BookCardSwiper: React.FunctionComponent<Props> = ({books}) => {
+  return (
+    <Container style={styles.container}>
+      <DeckSwiper
+        dataSource={books}
+        renderItem={(item: Book) => (
+          <Card style={styles.card}>
+            <CardItem cardBody>
+              <Image style={styles.cardImg} source={{uri: item.images[0]}} />
+            </CardItem>
+            <CardItem style={styles.cardInfo}>
+              <Body>
+                <Text>{item.name}</Text>
+                <Text>{item.author}</Text>
+              </Body>
+              <Button style={styles.infoBtn}>
+                <Icon
+                  name="info"
+                  type="MaterialIcons"
+                  style={styles.infoIcon}
+                />
+              </Button>
+            </CardItem>
+          </Card>
+        )}
+      />
+    </Container>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
     marginLeft: 30,
+  },
+  card: {
+    elevation: 4,
+    width: 300,
+    height: 454,
+  },
+  cardImg: {
+    height: 453,
+    flex: 1,
+  },
+  cardInfo: {
+    position: 'absolute',
+    bottom: 0,
+    opacity: 0.9,
+  },
+  infoBtn: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+  },
+  infoIcon: {
+    fontSize: 30,
+    marginLeft: 0,
+    marginRight: 0,
   },
 });
