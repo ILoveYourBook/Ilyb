@@ -11,7 +11,7 @@ type Props = {
 
 const NavigationTabs = (props: Props) => {
   return (
-    <Tabs locked>
+    <Tabs initialPage={1} locked>
       <Tab
         heading={
           <TabHeading>
