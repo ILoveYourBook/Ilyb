@@ -26,7 +26,7 @@ const NavigationTabs = (props: Props) => {
             <Icon name="home" type="MaterialIcons" />
           </TabHeading>
         }>
-        <Home />
+        <Home user={props.user} />
       </Tab>
       <Tab
         heading={

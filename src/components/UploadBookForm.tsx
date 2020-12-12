@@ -1,30 +1,38 @@
 /* eslint-disable no-shadow */
+import {User} from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import {Row, Button, Text, Icon, Container, Grid, H1} from 'native-base';
+import {Button, Container, Grid, H1, Icon, Row, Text} from 'native-base';
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {StyleSheet, TextInput, Image, PermissionsAndroid} from 'react-native';
+import {Image, PermissionsAndroid, StyleSheet, TextInput} from 'react-native';
+import 'react-native-get-random-values';
 import {launchCamera} from 'react-native-image-picker';
 import {Actions} from 'react-native-router-flux';
+import {v4 as uuid} from 'uuid';
 import {Book} from './Home';
 
-const UploadBookForm = () => {
+type Props = {
+  user: {id: string};
+};
+
+const UploadBookForm = (props: Props) => {
   const {control, handleSubmit} = useForm<Book>();
   const [localPath, setLocalPath] = useState<string>();
 
   const onSubmit = async (book: Book) => {
     try {
-      const imgName = 'userId' + book.title + book.author;
-      const reference = storage().ref(imgName);
+      const imageId = uuid();
+      const reference = storage().ref(imageId);
       await reference.putFile(localPath!);
       const imageUrl = await storage()
-        .ref('/' + imgName)
+        .ref('/' + imageId)
         .getDownloadURL();
       await firestore().collection('books').add({
         title: book.title,
         author: book.author,
         image: imageUrl,
+        userId: props.user.id,
       });
       Actions.pop();
     } catch (error) {
@@ -36,10 +44,10 @@ const UploadBookForm = () => {
     <Container style={styles.container}>
       <H1>Upload your book</H1>
       {localPath ? (
-        <Image style={styles.imgContainer} source={{uri: localPath}} />
+        <Image style={styles.imageContainer} source={{uri: localPath}} />
       ) : (
         <Image
-          style={styles.imgContainer}
+          style={styles.defaultImageContainer}
           source={require('../assets/books.jpg')}
         />
       )}
@@ -88,7 +96,6 @@ const UploadBookForm = () => {
                 {mediaType: 'photo', saveToPhotos: true},
                 (response) => {
                   setLocalPath(response.uri);
-                  console.log(localPath);
                 },
               );
             }}>
@@ -123,7 +130,7 @@ const styles = StyleSheet.create({
   galleryButton: {margin: 4},
   cameraButton: {backgroundColor: 'gray', margin: 4},
   submitButton: {margin: 4},
-  imgContainer: {
+  imageContainer: {
     alignSelf: 'center',
     width: 140,
     height: 300,
@@ -131,6 +138,12 @@ const styles = StyleSheet.create({
   },
   buttonsRow: {
     alignSelf: 'flex-end',
+  },
+  defaultImageContainer: {
+    alignSelf: 'center',
+    width: 300,
+    height: 300,
+    margin: 20,
   },
 });
 
