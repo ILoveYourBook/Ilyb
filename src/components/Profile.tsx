@@ -36,7 +36,7 @@ const Profile = (props: Props) => {
                 name="add"
                 type="MaterialIcons"
                 style={styles.addIcon}
-                onPress={() => Actions.uploadBook()}
+                onPress={() => Actions.uploadBook({user})}
               />
             </Button>
           </Row>

@@ -8,7 +8,16 @@ import {StyleSheet, TextInput, Image} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Book} from './Home';
 
-const UploadBookForm = () => {
+type Props = {
+  email: string;
+  familyName: string;
+  givenName: string;
+  id: string;
+  name: string;
+  photo: string;
+};
+
+const UploadBookForm = (props: Props) => {
   const {control, handleSubmit} = useForm<Book>();
   const [localPath, setLocalPath] = useState<string>();
 
@@ -16,10 +25,12 @@ const UploadBookForm = () => {
     try {
       const reference = storage().ref(localPath);
       await reference.putFile(localPath!);
+      const url = reference.getDownloadURL();
       await firestore().collection('books').add({
         title: book.title,
         author: book.author,
-        image: reference.fullPath,
+        image: url,
+        userId: props.id,
       });
     } catch (error) {
       console.log(error);
