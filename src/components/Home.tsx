@@ -5,7 +5,7 @@ import {StyleSheet} from 'react-native';
 import {BookCardSwiper} from './BookCardSwiper';
 
 export type Book = {
-  name: string;
+  title: string;
   author: string;
   images: Array<string>;
   userId: string;

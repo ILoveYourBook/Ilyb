@@ -3,12 +3,16 @@ import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {TextInput, Button, View} from 'react-native';
 import {Book} from './Home';
+import firestore from '@react-native-firebase/firestore';
 
 const UploadBookForm = () => {
   const {control, handleSubmit} = useForm<Book>();
 
-  const onSubmit = (book: Book) => {
-    console.log(book);
+  const onSubmit = async (book: Book) => {
+    await firestore().collection('books').add({
+      title: book.title,
+      author: book.author,
+    });
   };
 
   return (

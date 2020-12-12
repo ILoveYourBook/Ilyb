@@ -28,7 +28,7 @@ export const BookCardSwiper: React.FunctionComponent<Props> = ({books}) => {
             </CardItem>
             <CardItem style={styles.cardInfo}>
               <Body>
-                <Text>{item.name}</Text>
+                <Text>{item.title}</Text>
                 <Text>{item.author}</Text>
               </Body>
               <Button style={styles.infoBtn}>
