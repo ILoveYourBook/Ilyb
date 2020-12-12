@@ -13,14 +13,19 @@
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-firebase/app": "^10.1.0",
     "@react-native-firebase/firestore": "^10.1.1",
+    "@react-native-firebase/storage": "^10.2.0",
+    "@types/uuid": "^8.3.0",
     "native-base": "^2.13.14",
     "react": "16.13.1",
+    "react-hook-form": "^6.13.0",
     "react-native": "^0.63.3",
     "react-native-gesture-handler": "^1.9.0",
+    "react-native-image-picker": "^3.0.1",
     "react-native-reanimated": "^1.13.2",
     "react-native-router-flux": "^4.2.0",
     "react-native-screens": "^2.15.0",
-    "react-native-vector-icons": "^7.1.0"
+    "react-native-vector-icons": "^7.1.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
