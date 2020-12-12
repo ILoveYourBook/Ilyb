@@ -1,3 +1,4 @@
+import {User} from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import {Button, Icon, View} from 'native-base';
 import React, {useEffect, useState} from 'react';
@@ -11,8 +12,13 @@ export type Book = {
   userId: string;
 };
 
-const Home = () => {
+type Props = {
+  user: User;
+};
+
+const Home = (props: Props) => {
   const [books, setBooks] = useState<Array<Book>>();
+  const user = props.user.user;
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -29,7 +35,7 @@ const Home = () => {
 
   return (
     <>
-      {books ? <BookCardSwiper books={books} /> : null}
+      {books ? <BookCardSwiper books={books} userId={user.id} /> : null}
       <View style={styles.mainView}>
         <Button style={styles.passBtn}>
           <Icon style={styles.passIcon} name="clear" type="MaterialIcons" />
