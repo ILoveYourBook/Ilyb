@@ -7,7 +7,7 @@ import {BookCardSwiper} from './BookCardSwiper';
 export type Book = {
   title: string;
   author: string;
-  images: Array<string>;
+  image: string;
   userId: string;
 };
 
