@@ -6,6 +6,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import firestore from '@react-native-firebase/firestore';
 
 const SignIn = () => {
   const [user, setUser] = useState<User>();
@@ -28,6 +29,16 @@ const SignIn = () => {
         onPress={async () => {
           await GoogleSignin.hasPlayServices();
           const signedInUser = await GoogleSignin.signIn();
+          const userDocument = await firestore()
+            .collection('users')
+            .doc(signedInUser.user.id)
+            .get();
+          if (!userDocument.exists) {
+            await firestore()
+              .collection('users')
+              .doc(signedInUser.user.id)
+              .set({likedUsers: []});
+          }
           setUser(signedInUser);
         }}
       />
