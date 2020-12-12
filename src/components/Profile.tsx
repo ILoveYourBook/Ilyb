@@ -2,6 +2,7 @@ import React from 'react';
 import {User} from '@react-native-community/google-signin';
 import {Button, Col, Grid, H1, Icon, Row, Text, Thumbnail} from 'native-base';
 import {StyleSheet} from 'react-native';
+import {Actions} from 'react-native-router-flux';
 
 type Props = {
   user: User;
@@ -31,7 +32,12 @@ const Profile = (props: Props) => {
             </Button>
 
             <Button success style={styles.addBookBtn}>
-              <Icon name="add" type="MaterialIcons" style={styles.addIcon} />
+              <Icon
+                name="add"
+                type="MaterialIcons"
+                style={styles.addIcon}
+                onPress={() => Actions.uploadBook()}
+              />
             </Button>
           </Row>
         </Col>

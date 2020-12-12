@@ -4,6 +4,7 @@ import {Router, Scene} from 'react-native-router-flux';
 import env from './.env';
 import NavigationTabs from './src/components/NavigationTabs';
 import SignIn from './src/components/SignIn';
+import UploadBookForm from './src/components/UploadBookForm';
 
 const App = () => {
   useEffect(() => {
@@ -28,6 +29,12 @@ const App = () => {
           component={NavigationTabs}
           hideNavBar={true}
           title="NavigationTabs"
+        />
+        <Scene
+          key="uploadBook"
+          component={UploadBookForm}
+          hideNavBar={true}
+          title="UploadBookForm"
         />
       </Scene>
     </Router>
