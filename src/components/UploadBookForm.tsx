@@ -1,20 +1,19 @@
 /* eslint-disable no-shadow */
+import {User} from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import {Row, Button, Text, Icon, Container, Grid} from 'native-base';
+import {Button, Container, Grid, H1, Icon, Row, Text} from 'native-base';
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {StyleSheet, TextInput, Image} from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Image, PermissionsAndroid, StyleSheet, TextInput} from 'react-native';
+import 'react-native-get-random-values';
+import {launchCamera} from 'react-native-image-picker';
+import {Actions} from 'react-native-router-flux';
+import {v4 as uuid} from 'uuid';
 import {Book} from './Home';
 
 type Props = {
-  email: string;
-  familyName: string;
-  givenName: string;
-  id: string;
-  name: string;
-  photo: string;
+  user: {id: string};
 };
 
 const UploadBookForm = (props: Props) => {
@@ -23,15 +22,19 @@ const UploadBookForm = (props: Props) => {
 
   const onSubmit = async (book: Book) => {
     try {
-      const reference = storage().ref(localPath);
+      const imageId = uuid();
+      const reference = storage().ref(imageId);
       await reference.putFile(localPath!);
-      const url = reference.getDownloadURL();
+      const imageUrl = await storage()
+        .ref('/' + imageId)
+        .getDownloadURL();
       await firestore().collection('books').add({
         title: book.title,
         author: book.author,
-        image: url,
-        userId: props.id,
+        image: imageUrl,
+        userId: props.user.id,
       });
+      Actions.pop();
     } catch (error) {
       console.log(error);
     }
@@ -39,14 +42,18 @@ const UploadBookForm = (props: Props) => {
 
   return (
     <Container style={styles.container}>
-      {/* {localPath ? (
-        <Image source={{uri: localPath}} />
+      <H1>Upload your book</H1>
+      {localPath ? (
+        <Image style={styles.imageContainer} source={{uri: localPath}} />
       ) : (
-        <Image source={require('../assets/image-preview.png')} />
-      )} */}
-      <Image source={require('../assets/image-preview.png')} />
+        <Image
+          style={styles.defaultImageContainer}
+          source={require('../assets/books.jpg')}
+        />
+      )}
+      {/* <Image source={require('../assets/image-preview.png')} /> */}
       <Grid>
-        <Row size={0.3}>
+        <Row size={0.2}>
           <Controller
             name="title"
             defaultValue=""
@@ -62,7 +69,7 @@ const UploadBookForm = (props: Props) => {
             control={control}
           />
         </Row>
-        <Row size={0.3}>
+        <Row size={0.2}>
           <Controller
             name="author"
             defaultValue=""
@@ -78,19 +85,13 @@ const UploadBookForm = (props: Props) => {
             )}
           />
         </Row>
-        <Row size={0.4}>
-          {/* <Button
-            style={styles.galleryButton}
-            onPress={async () => {
-              launchImageLibrary({mediaType: 'photo'}, (response) => {
-                setLocalPath(response.uri);
-              });
-            }}>
-            <Text>UPLOAD FROM GALLERY</Text>
-          </Button> */}
+        <Row style={styles.buttonsRow} size={0.6}>
           <Button
             style={styles.cameraButton}
             onPress={async () => {
+              await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+              );
               launchCamera(
                 {mediaType: 'photo', saveToPhotos: true},
                 (response) => {
@@ -100,8 +101,6 @@ const UploadBookForm = (props: Props) => {
             }}>
             <Icon name="camera" type="MaterialCommunityIcons" />
           </Button>
-        </Row>
-        <Row size={0.6}>
           <Button
             success
             style={styles.submitButton}
@@ -117,6 +116,7 @@ const UploadBookForm = (props: Props) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginTop: 50,
   },
   input: {
     width: 260,
@@ -130,6 +130,21 @@ const styles = StyleSheet.create({
   galleryButton: {margin: 4},
   cameraButton: {backgroundColor: 'gray', margin: 4},
   submitButton: {margin: 4},
+  imageContainer: {
+    alignSelf: 'center',
+    width: 140,
+    height: 300,
+    margin: 20,
+  },
+  buttonsRow: {
+    alignSelf: 'flex-end',
+  },
+  defaultImageContainer: {
+    alignSelf: 'center',
+    width: 300,
+    height: 300,
+    margin: 20,
+  },
 });
 
 export default UploadBookForm;

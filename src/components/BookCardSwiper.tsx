@@ -40,7 +40,7 @@ export const BookCardSwiper = (props: Props) => {
           const likedUser = (
             await firestore().collection('users').doc(likedUserId).get()
           ).data();
-          if (likedUser!.likedUsers.includes(userId)) {
+          if (likedUser && likedUser.likedUsers.includes(userId)) {
             console.log('MATCH');
           }
         }}
