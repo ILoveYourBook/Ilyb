@@ -17,20 +17,24 @@ const Home = (props: { user: User }) => {
 
   const [books, setBooks] = useState<Array<Book>>();
 
+  const fetchBooks = async () => {
+    try {
+      const booksToShow = await firestore()
+        .collection('books')
+        .where('userId', '!=', user.id)
+        .get();
+      const booksToShowData = booksToShow.docs.map(
+        (bookDocument) => bookDocument.data() as Book,
+      );
+      setBooks(booksToShowData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const booksCollection = await firestore().collection('books').get();
-        const booksArray = booksCollection.docs.map(
-          (bookDocument) => bookDocument.data() as Book,
-        );
-        setBooks(booksArray);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchBooks();
-  }, []);
+  });
 
   return (
     <Container>

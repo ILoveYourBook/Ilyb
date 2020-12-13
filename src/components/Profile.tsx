@@ -1,14 +1,32 @@
 import { Button, Col, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import firestore from '@react-native-firebase/firestore';
+import { Book } from './Home';
 import { User } from '../models/User';
 
 const Profile = (props: { user: User }) => {
   const { user } = props;
-  const numberOfBooks = 21;
-  const userBiography =
-    'This is my biography, where I should tell the people I match which are my interests in books.';
+
+  const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
+
+  const fetchBooks = async () => {
+    try {
+      const data = await firestore()
+        .collection('books')
+        .where('userId', '==', user.id)
+        .get();
+      const arrayData = data.docs.map((document) => document.data() as Book);
+      setUploadedBooks(arrayData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  });
 
   return (
     <Grid style={styles.mainGrid}>
@@ -16,7 +34,7 @@ const Profile = (props: { user: User }) => {
         <Col style={styles.profileInfo}>
           <Thumbnail style={styles.avatar} source={{ uri: user.avatarUrl }} />
           <H1>{user.fullName}</H1>
-          <Text style={styles.bio}>{userBiography}</Text>
+          <Text style={styles.bio}>{user.email}</Text>
           <Row>
             <Button
               rounded
@@ -27,7 +45,7 @@ const Profile = (props: { user: User }) => {
                 type="MaterialIcons"
                 style={styles.bookIcon}
               />
-              <Text>Books: {numberOfBooks}</Text>
+              <Text>Books: {uploadedBooks?.length}</Text>
             </Button>
 
             <Button
@@ -40,7 +58,10 @@ const Profile = (props: { user: User }) => {
         </Col>
       </Row>
       <Row size={0.25} style={styles.logOutBtnRow}>
-        <Button danger style={styles.logoutBtn}>
+        <Button
+          danger
+          onPress={() => Actions.popTo('loading')}
+          style={styles.logoutBtn}>
           <Text>Log out</Text>
         </Button>
       </Row>
