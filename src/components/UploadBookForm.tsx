@@ -10,6 +10,7 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
 import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
@@ -38,6 +39,10 @@ const UploadBookForm = (props: { user: User }) => {
         image: imageUrl,
         userId: user.id,
       });
+      ToastAndroid.show(
+        'Your book was uploaded successfully!',
+        ToastAndroid.SHORT,
+      );
       Actions.pop();
     } catch (error) {
       console.log(error);

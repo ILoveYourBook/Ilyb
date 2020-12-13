@@ -55,8 +55,8 @@ const SignIn = () => {
       email: params.email,
       fullName: params.fullName!,
       avatarUrl: params.avatarUrl!,
-      likedBooks: [],
-      matchedProfiles: [],
+      likedProfileIds: [],
+      matchedProfileIds: [],
     };
     await firestore().collection('users').doc(newUser.id).set(newUser);
     return newUser;

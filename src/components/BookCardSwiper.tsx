@@ -21,19 +21,37 @@ export const BookCardSwiper = (props: Props) => {
   const { books, user } = props;
   let thisDeck: DeckSwiper;
 
-  const swipeRight = async () => {
+  const likeProfile = async (swipedBookProfileId: string) => {
+    await firestore()
+      .collection('users')
+      .doc(user.id)
+      .update({
+        likedProfileIds: firestore.FieldValue.arrayUnion(swipedBookProfileId),
+      });
+  };
+
+  const itIsAMatch = async (swipedBookProfileId: string) => {
+    const userOfSwipedBook = (
+      await firestore().collection('users').doc(swipedBookProfileId).get()
+    ).data() as User;
+    return userOfSwipedBook.likedProfileIds.includes(user.id);
+  };
+
+  const addMatchedProfile = async (swipedBookProfileId: string) => {
+    await firestore()
+      .collection('users')
+      .doc(user.id)
+      .update({
+        matchedProfiles: firestore.FieldValue.arrayUnion(swipedBookProfileId),
+      });
+  };
+
+  const onSwipeRight = async () => {
     try {
-      const likedUserId = thisDeck._root.state.selectedItem.userId;
-      await firestore()
-        .collection('users')
-        .doc(user.id)
-        .update({
-          likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
-        });
-      const likedUser = (
-        await firestore().collection('users').doc(likedUserId).get()
-      ).data();
-      if (likedUser && likedUser.likedUsers.includes(user.id)) {
+      const swipedBookProfileId = thisDeck._root.state.selectedItem.userId;
+      await likeProfile(swipedBookProfileId);
+      if (await itIsAMatch(swipedBookProfileId)) {
+        addMatchedProfile(swipedBookProfileId);
         console.log('MATCH');
       }
     } catch (error) {
@@ -47,7 +65,7 @@ export const BookCardSwiper = (props: Props) => {
         deck ? (thisDeck = deck) : null;
       }}
       dataSource={books}
-      onSwipeRight={async () => await swipeRight()}
+      onSwipeRight={onSwipeRight}
       renderItem={(item: Book) => {
         return (
           <Card style={styles.card}>
