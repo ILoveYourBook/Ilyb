@@ -1,6 +1,6 @@
 import { User } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
-import { Button, Icon, View } from 'native-base';
+import { Button, Col, Container, Icon, Row, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { BookCardSwiper } from './BookCardSwiper';
@@ -34,43 +34,71 @@ const Home = (props: Props) => {
   }, []);
 
   return (
-    <>
-      {books ? <BookCardSwiper books={books} userId={user.id} /> : null}
-      <View style={styles.mainView}>
-        <Button style={styles.passBtn}>
-          <Icon style={styles.passIcon} name="clear" type="MaterialIcons" />
-        </Button>
-        <Button style={styles.likeBtn}>
-          <Icon style={styles.likeIcon} name="favorite" type="MaterialIcons" />
-        </Button>
+    <Container>
+      <View style={styles.cardSwiper}>
+        {books ? <BookCardSwiper books={books} userId={user.id} /> : null}
       </View>
-    </>
+      <Row size={0.2} style={styles.row}>
+        <Col size={0.5}>
+          <Button style={styles.passBtn}>
+            <Icon
+              style={styles.passIcon}
+              name="close"
+              type="MaterialCommunityIcons"
+            />
+          </Button>
+        </Col>
+        <Col size={0.5}>
+          <Button style={styles.likeBtn}>
+            <Icon
+              style={styles.likeIcon}
+              name="star"
+              type="MaterialCommunityIcons"
+            />
+          </Button>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
-  mainView: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 20,
+  cardSwiper: {
+    position: 'relative',
+    flex: 0.8,
+    top: 25,
+    left: 25,
+  },
+  row: {
+    alignItems: 'center',
   },
   passBtn: {
+    height: 80,
+    width: 80,
+    alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black',
-    borderRadius: 0,
-    flex: 0.5,
+    backgroundColor: 'white',
+    borderColor: 'crimson',
+    borderWidth: 5,
+    borderRadius: 40,
   },
   passIcon: {
     fontSize: 40,
+    color: 'crimson',
   },
   likeBtn: {
+    height: 80,
+    width: 80,
+    alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red',
-    borderRadius: 0,
-    flex: 0.5,
+    backgroundColor: 'white',
+    borderColor: 'goldenrod',
+    borderWidth: 5,
+    borderRadius: 40,
   },
   likeIcon: {
     fontSize: 40,
+    color: 'goldenrod',
   },
 });
 

@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardItem,
-  Container,
   DeckSwiper,
   Icon,
   Text,
@@ -23,62 +22,56 @@ export const BookCardSwiper = (props: Props) => {
   let thisDeck: DeckSwiper;
 
   return (
-    <Container style={styles.container}>
-      <DeckSwiper
-        ref={(deck) => {
-          deck ? (thisDeck = deck) : null;
-        }}
-        dataSource={books}
-        onSwipeRight={async () => {
-          const likedUserId = thisDeck._root.state.selectedItem.userId;
-          await firestore()
-            .collection('users')
-            .doc(userId)
-            .update({
-              likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
-            });
-          const likedUser = (
-            await firestore().collection('users').doc(likedUserId).get()
-          ).data();
-          if (likedUser && likedUser.likedUsers.includes(userId)) {
-            console.log('MATCH');
-          }
-        }}
-        renderItem={(item: Book) => {
-          return (
-            <Card style={styles.card}>
-              <CardItem cardBody>
-                <Image style={styles.cardImg} source={{ uri: item.image }} />
-              </CardItem>
-              <CardItem style={styles.cardInfo}>
-                <Body>
-                  <Text>{item.title}</Text>
-                  <Text>{item.author}</Text>
-                </Body>
-                <Button style={styles.infoBtn}>
-                  <Icon
-                    name="info"
-                    type="MaterialIcons"
-                    style={styles.infoIcon}
-                  />
-                </Button>
-              </CardItem>
-            </Card>
-          );
-        }}
-      />
-    </Container>
+    <DeckSwiper
+      ref={(deck) => {
+        deck ? (thisDeck = deck) : null;
+      }}
+      dataSource={books}
+      onSwipeRight={async () => {
+        const likedUserId = thisDeck._root.state.selectedItem.userId;
+        await firestore()
+          .collection('users')
+          .doc(userId)
+          .update({
+            likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
+          });
+        const likedUser = (
+          await firestore().collection('users').doc(likedUserId).get()
+        ).data();
+        if (likedUser && likedUser.likedUsers.includes(userId)) {
+          console.log('MATCH');
+        }
+      }}
+      renderItem={(item: Book) => {
+        return (
+          <Card style={styles.card}>
+            <CardItem cardBody>
+              <Image style={styles.cardImg} source={{ uri: item.image }} />
+            </CardItem>
+            <CardItem style={styles.cardInfo}>
+              <Body>
+                <Text>{item.title}</Text>
+                <Text>{item.author}</Text>
+              </Body>
+              <Button style={styles.infoBtn}>
+                <Icon
+                  name="info"
+                  type="MaterialIcons"
+                  style={styles.infoIcon}
+                />
+              </Button>
+            </CardItem>
+          </Card>
+        );
+      }}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    marginLeft: 30,
-  },
   card: {
     elevation: 4,
-    width: 300,
+    width: 310,
     height: 454,
   },
   cardImg: {
