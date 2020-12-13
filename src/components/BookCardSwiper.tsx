@@ -10,8 +10,8 @@ import {
   Text,
 } from 'native-base';
 import React from 'react';
-import {Image, StyleSheet} from 'react-native';
-import {Book} from './Home';
+import { Image, StyleSheet } from 'react-native';
+import { Book } from './Home';
 export interface Props {
   books: Array<Book>;
   userId: string;
@@ -48,7 +48,7 @@ export const BookCardSwiper = (props: Props) => {
           return (
             <Card style={styles.card}>
               <CardItem cardBody>
-                <Image style={styles.cardImg} source={{uri: item.image}} />
+                <Image style={styles.cardImg} source={{ uri: item.image }} />
               </CardItem>
               <CardItem style={styles.cardInfo}>
                 <Body>

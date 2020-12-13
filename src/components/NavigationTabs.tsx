@@ -1,5 +1,5 @@
-import {User} from '@react-native-community/google-signin';
-import {Icon, Tab, TabHeading, Tabs} from 'native-base';
+import { User } from '@react-native-community/google-signin';
+import { Icon, Tab, TabHeading, Tabs } from 'native-base';
 import React from 'react';
 import Chat from './Chat';
 import Home from './Home';

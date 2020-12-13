@@ -1,8 +1,8 @@
+import { User } from '@react-native-community/google-signin';
+import { Button, Col, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
 import React from 'react';
-import {User} from '@react-native-community/google-signin';
-import {Button, Col, Grid, H1, Icon, Row, Text, Thumbnail} from 'native-base';
-import {StyleSheet} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import { StyleSheet } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 type Props = {
   user: User;
@@ -18,7 +18,7 @@ const Profile = (props: Props) => {
     <Grid style={styles.mainGrid}>
       <Row size={0.75}>
         <Col style={styles.profileInfo}>
-          <Thumbnail style={styles.avatar} source={{uri: user.photo || ''}} />
+          <Thumbnail style={styles.avatar} source={{ uri: user.photo || '' }} />
           <H1>{user.name}</H1>
           <Text style={styles.bio}>{userBiography}</Text>
           <Row>
@@ -36,7 +36,7 @@ const Profile = (props: Props) => {
                 name="add"
                 type="MaterialIcons"
                 style={styles.addIcon}
-                onPress={() => Actions.uploadBook({user})}
+                onPress={() => Actions.uploadBook({ user })}
               />
             </Button>
           </Row>

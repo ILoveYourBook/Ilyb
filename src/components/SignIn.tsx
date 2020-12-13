@@ -3,17 +3,17 @@ import {
   GoogleSigninButton,
   User,
 } from '@react-native-community/google-signin';
-import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {Actions} from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 const SignIn = () => {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
     if (user) {
-      Actions.nav({user});
+      Actions.nav({ user });
     }
   }, [user]);
 
@@ -37,7 +37,7 @@ const SignIn = () => {
             await firestore()
               .collection('users')
               .doc(signedInUser.user.id)
-              .set({likedUsers: []});
+              .set({ likedUsers: [] });
           }
           setUser(signedInUser);
         }}

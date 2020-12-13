@@ -1,23 +1,22 @@
 /* eslint-disable no-shadow */
-import {User} from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import {Button, Container, Grid, H1, Icon, Row, Text} from 'native-base';
-import React, {useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
-import {Image, PermissionsAndroid, StyleSheet, TextInput} from 'react-native';
+import { Button, Container, Grid, H1, Icon, Row, Text } from 'native-base';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Image, PermissionsAndroid, StyleSheet, TextInput } from 'react-native';
 import 'react-native-get-random-values';
-import {launchCamera} from 'react-native-image-picker';
-import {Actions} from 'react-native-router-flux';
-import {v4 as uuid} from 'uuid';
-import {Book} from './Home';
+import { launchCamera } from 'react-native-image-picker';
+import { Actions } from 'react-native-router-flux';
+import { v4 as uuid } from 'uuid';
+import { Book } from './Home';
 
 type Props = {
-  user: {id: string};
+  user: { id: string };
 };
 
 const UploadBookForm = (props: Props) => {
-  const {control, handleSubmit} = useForm<Book>();
+  const { control, handleSubmit } = useForm<Book>();
   const [localPath, setLocalPath] = useState<string>();
 
   const onSubmit = async (book: Book) => {
@@ -44,7 +43,7 @@ const UploadBookForm = (props: Props) => {
     <Container style={styles.container}>
       <H1>Upload your book</H1>
       {localPath ? (
-        <Image style={styles.imageContainer} source={{uri: localPath}} />
+        <Image style={styles.imageContainer} source={{ uri: localPath }} />
       ) : (
         <Image
           style={styles.defaultImageContainer}
@@ -57,8 +56,8 @@ const UploadBookForm = (props: Props) => {
           <Controller
             name="title"
             defaultValue=""
-            rules={{required: true}}
-            render={({onChange, value}) => (
+            rules={{ required: true }}
+            render={({ onChange, value }) => (
               <TextInput
                 style={styles.input}
                 placeholder="Title"
@@ -73,9 +72,9 @@ const UploadBookForm = (props: Props) => {
           <Controller
             name="author"
             defaultValue=""
-            rules={{required: true}}
+            rules={{ required: true }}
             control={control}
-            render={({onChange, value}) => (
+            render={({ onChange, value }) => (
               <TextInput
                 style={styles.input}
                 placeholder="Author"
@@ -93,7 +92,7 @@ const UploadBookForm = (props: Props) => {
                 PermissionsAndroid.PERMISSIONS.CAMERA,
               );
               launchCamera(
-                {mediaType: 'photo', saveToPhotos: true},
+                { mediaType: 'photo', saveToPhotos: true },
                 (response) => {
                   setLocalPath(response.uri);
                 },
@@ -127,9 +126,9 @@ const styles = StyleSheet.create({
     margin: 4,
     fontSize: 16,
   },
-  galleryButton: {margin: 4},
-  cameraButton: {backgroundColor: 'gray', margin: 4},
-  submitButton: {margin: 4},
+  galleryButton: { margin: 4 },
+  cameraButton: { backgroundColor: 'gray', margin: 4 },
+  submitButton: { margin: 4 },
   imageContainer: {
     alignSelf: 'center',
     width: 140,

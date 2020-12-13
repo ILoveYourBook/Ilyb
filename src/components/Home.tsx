@@ -1,9 +1,9 @@
-import {User} from '@react-native-community/google-signin';
+import { User } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
-import {Button, Icon, View} from 'native-base';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {BookCardSwiper} from './BookCardSwiper';
+import { Button, Icon, View } from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { BookCardSwiper } from './BookCardSwiper';
 
 export type Book = {
   title: string;

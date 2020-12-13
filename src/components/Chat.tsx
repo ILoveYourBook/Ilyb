@@ -9,7 +9,7 @@ import {
   Thumbnail,
 } from 'native-base';
 import React from 'react';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 
 const Chat = () => {
   const chats = [
@@ -56,8 +56,8 @@ const Chat = () => {
                   key={key}>
                   <Left>
                     <Thumbnail
-                      style={{marginBottom: 10}}
-                      source={{uri: item.thumbnailUrl}}
+                      style={{ marginBottom: 10 }}
+                      source={{ uri: item.thumbnailUrl }}
                     />
                   </Left>
                   <Body>
