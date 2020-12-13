@@ -50,7 +50,7 @@ const Profile = (props: { user: User }) => {
             <Button
               success
               style={styles.addBookBtn}
-              onPress={() => Actions.uploadBook({ user })}>
+              onPress={() => Actions.uploadBook({ user, isLoggedUser: true })}>
               <Icon name="add" type="MaterialIcons" style={styles.addIcon} />
             </Button>
           </Row>

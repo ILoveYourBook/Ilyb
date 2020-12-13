@@ -17,8 +17,10 @@ import { Alert, StyleSheet } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
 
-const UploadedBooks = (props: { user: User }) => {
+const UploadedBooks = (props: { user: User; isLoggedUser: boolean }) => {
   const { user } = props;
+  const { isLoggedUser } = props;
+
   const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
 
   const getBookDocumentId = async (key: number): Promise<string> => {
@@ -80,11 +82,13 @@ const UploadedBooks = (props: { user: User }) => {
                   </Text>
                 </Body>
                 <Right>
-                  <Button
-                    transparent
-                    onPress={async () => await deleteBook(key)}>
-                    <Text style={styles.deleteButtonText}>Delete</Text>
-                  </Button>
+                  {isLoggedUser ? (
+                    <Button
+                      transparent
+                      onPress={async () => await deleteBook(key)}>
+                      <Text style={styles.deleteButtonText}>Delete</Text>
+                    </Button>
+                  ) : null}
                 </Right>
               </ListItem>
             );
