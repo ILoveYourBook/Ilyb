@@ -4,7 +4,13 @@ import storage from '@react-native-firebase/storage';
 import { Button, Container, Grid, H1, Icon, Row, Text } from 'native-base';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Image, PermissionsAndroid, StyleSheet, TextInput } from 'react-native';
+import {
+  Image,
+  PermissionsAndroid,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
 import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
 import { Actions } from 'react-native-router-flux';
@@ -40,82 +46,87 @@ const UploadBookForm = (props: Props) => {
   };
 
   return (
-    <Container style={styles.container}>
-      <H1>Upload your book</H1>
-      {localPath ? (
-        <Image style={styles.imageContainer} source={{ uri: localPath }} />
-      ) : (
-        <Image
-          style={styles.defaultImageContainer}
-          source={require('../assets/books.jpg')}
-        />
-      )}
-      {/* <Image source={require('../assets/image-preview.png')} /> */}
-      <Grid>
-        <Row size={0.2}>
-          <Controller
-            name="title"
-            defaultValue=""
-            rules={{ required: true }}
-            render={({ onChange, value }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Title"
-                value={value}
-                onChangeText={(value) => onChange(value)}
-              />
-            )}
-            control={control}
+    <ScrollView>
+      <Container style={styles.container}>
+        <H1>Upload your book</H1>
+        {localPath ? (
+          <Image style={styles.imageContainer} source={{ uri: localPath }} />
+        ) : (
+          <Image
+            style={styles.defaultImageContainer}
+            source={require('../assets/books.jpg')}
           />
-        </Row>
-        <Row size={0.2}>
-          <Controller
-            name="author"
-            defaultValue=""
-            rules={{ required: true }}
-            control={control}
-            render={({ onChange, value }) => (
-              <TextInput
-                style={styles.input}
-                placeholder="Author"
-                value={value}
-                onChangeText={(value) => onChange(value)}
-              />
-            )}
-          />
-        </Row>
-        <Row style={styles.buttonsRow} size={0.6}>
-          <Button
-            style={styles.cameraButton}
-            onPress={async () => {
-              await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.CAMERA,
-              );
-              launchCamera(
-                { mediaType: 'photo', saveToPhotos: true },
-                (response) => {
-                  setLocalPath(response.uri);
-                },
-              );
-            }}>
-            <Icon name="camera" type="MaterialCommunityIcons" />
-          </Button>
-          <Button
-            success
-            style={styles.submitButton}
-            onPress={handleSubmit(onSubmit)}>
-            <Text>SUBMIT</Text>
-          </Button>
-        </Row>
-      </Grid>
-    </Container>
+        )}
+        {/* <Image source={require('../assets/image-preview.png')} /> */}
+        <Grid>
+          <Row size={0.2}>
+            <Controller
+              name="title"
+              defaultValue=""
+              rules={{ required: true }}
+              render={({ onChange, value }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Title"
+                  value={value}
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+              control={control}
+            />
+          </Row>
+          <Row size={0.2}>
+            <Controller
+              name="author"
+              defaultValue=""
+              rules={{ required: true }}
+              control={control}
+              render={({ onChange, value }) => (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Author"
+                  value={value}
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+          </Row>
+          <Row style={styles.buttonsRow} size={0.6}>
+            <Button
+              style={styles.cameraButton}
+              onPress={async () => {
+                await PermissionsAndroid.request(
+                  PermissionsAndroid.PERMISSIONS.CAMERA,
+                );
+                launchCamera(
+                  { mediaType: 'photo', saveToPhotos: true },
+                  (response) => {
+                    setLocalPath(response.uri);
+                  },
+                );
+              }}>
+              <Icon name="camera" type="MaterialCommunityIcons" />
+            </Button>
+            <Button
+              success
+              style={styles.submitButton}
+              onPress={handleSubmit(onSubmit)}>
+              <Text>SUBMIT</Text>
+            </Button>
+          </Row>
+        </Grid>
+      </Container>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  mainView: {
+    flex: 1,
+  },
   container: {
     alignItems: 'center',
-    marginTop: 50,
+    paddingTop: 50,
   },
   input: {
     width: 260,
@@ -131,8 +142,8 @@ const styles = StyleSheet.create({
   submitButton: { margin: 4 },
   imageContainer: {
     alignSelf: 'center',
-    width: 140,
-    height: 300,
+    width: 180,
+    aspectRatio: 9 / 16,
     margin: 20,
   },
   buttonsRow: {
