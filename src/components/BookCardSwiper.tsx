@@ -28,18 +28,22 @@ export const BookCardSwiper = (props: Props) => {
       }}
       dataSource={books}
       onSwipeRight={async () => {
-        const likedUserId = thisDeck._root.state.selectedItem.userId;
-        await firestore()
-          .collection('users')
-          .doc(userId)
-          .update({
-            likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
-          });
-        const likedUser = (
-          await firestore().collection('users').doc(likedUserId).get()
-        ).data();
-        if (likedUser && likedUser.likedUsers.includes(userId)) {
-          console.log('MATCH');
+        try {
+          const likedUserId = thisDeck._root.state.selectedItem.userId;
+          await firestore()
+            .collection('users')
+            .doc(userId)
+            .update({
+              likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
+            });
+          const likedUser = (
+            await firestore().collection('users').doc(likedUserId).get()
+          ).data();
+          if (likedUser && likedUser.likedUsers.includes(userId)) {
+            console.log('MATCH');
+          }
+        } catch (error) {
+          throw error;
         }
       }}
       renderItem={(item: Book) => {
