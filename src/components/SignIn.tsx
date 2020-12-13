@@ -1,21 +1,66 @@
 import {
   GoogleSignin,
   GoogleSigninButton,
-  User,
+  User as SignedInUser,
 } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { User } from '../models/User';
 
 const SignIn = () => {
   const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    if (user) {
-      Actions.nav({ user });
-    }
+    user ? Actions.nav({ user }) : null;
   }, [user]);
+
+  const signInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      return await GoogleSignin.signIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUserCreation = async (signedInUser: SignedInUser) => {
+    const { id, email, name: fullName, photo: avatarUrl } = signedInUser.user;
+    let currentUser: User;
+    (await existsUserWithId(id))
+      ? (currentUser = await getUserFromId(id))
+      : (currentUser = await createNewUser({ id, email, fullName, avatarUrl }));
+    setUser(currentUser);
+  };
+
+  const existsUserWithId = async (id: string) => {
+    const userDocument = await firestore().collection('users').doc(id).get();
+    return userDocument.exists;
+  };
+
+  const getUserFromId = async (id: string) => {
+    const userDocument = await firestore().collection('users').doc(id).get();
+    return userDocument.data() as User;
+  };
+
+  const createNewUser = async (params: {
+    id: string;
+    fullName: string | null;
+    email: string;
+    avatarUrl: string | null;
+  }) => {
+    const newUser: User = {
+      id: params.id,
+      email: params.email,
+      fullName: params.fullName!,
+      avatarUrl: params.avatarUrl!,
+      likedBooks: [],
+      matchedProfiles: [],
+    };
+    await firestore().collection('users').doc(newUser.id).set(newUser);
+    return newUser;
+  };
 
   return (
     <View style={styles.mainView}>
@@ -27,19 +72,8 @@ const SignIn = () => {
         style={styles.signInButton}
         size={GoogleSigninButton.Size.Wide}
         onPress={async () => {
-          await GoogleSignin.hasPlayServices();
-          const signedInUser = await GoogleSignin.signIn();
-          const userDocument = await firestore()
-            .collection('users')
-            .doc(signedInUser.user.id)
-            .get();
-          if (!userDocument.exists) {
-            await firestore()
-              .collection('users')
-              .doc(signedInUser.user.id)
-              .set({ likedUsers: [] });
-          }
-          setUser(signedInUser);
+          const signedInUser = await signInWithGoogle();
+          signedInUser ? await handleUserCreation(signedInUser) : null;
         }}
       />
     </View>

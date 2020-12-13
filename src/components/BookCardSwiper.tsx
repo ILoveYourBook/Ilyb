@@ -10,15 +10,15 @@ import {
 } from 'native-base';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
+import { User } from '../models/User';
 import { Book } from './Home';
 export interface Props {
   books: Array<Book>;
-  userId: string;
+  user: User;
 }
 
 export const BookCardSwiper = (props: Props) => {
-  const books = props.books;
-  const userId = props.userId;
+  const { books, user } = props;
   let thisDeck: DeckSwiper;
 
   const swipeRight = async () => {
@@ -26,14 +26,14 @@ export const BookCardSwiper = (props: Props) => {
       const likedUserId = thisDeck._root.state.selectedItem.userId;
       await firestore()
         .collection('users')
-        .doc(userId)
+        .doc(user.id)
         .update({
           likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
         });
       const likedUser = (
         await firestore().collection('users').doc(likedUserId).get()
       ).data();
-      if (likedUser && likedUser.likedUsers.includes(userId)) {
+      if (likedUser && likedUser.likedUsers.includes(user.id)) {
         console.log('MATCH');
       }
     } catch (error) {
@@ -48,7 +48,6 @@ export const BookCardSwiper = (props: Props) => {
       }}
       dataSource={books}
       onSwipeRight={async () => await swipeRight()}
-      onSwipeLeft={async () => await swipeRight()}
       renderItem={(item: Book) => {
         return (
           <Card style={styles.card}>
@@ -78,12 +77,12 @@ export const BookCardSwiper = (props: Props) => {
 const styles = StyleSheet.create({
   card: {
     elevation: 4,
-    width: 310,
-    height: 454,
+    width: 340,
+    aspectRatio: 3 / 4,
   },
   cardImg: {
-    height: 453,
-    flex: 1,
+    width: 339,
+    aspectRatio: 3 / 4,
   },
   cardInfo: {
     position: 'absolute',

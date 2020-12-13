@@ -1,21 +1,15 @@
-import { User } from '@react-native-community/google-signin';
 import { Button, Col, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
 import { Book } from './Home';
+import { User } from '../models/User';
 
-type Props = {
-  user: User;
-};
+const Profile = (props: { user: User }) => {
+  const { user } = props;
 
-const Profile = (props: Props) => {
   const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
-
-  const user = props.user.user;
-  const userBiography =
-    'This is my biography, where I should tell the people I match which are my interests in books.';
 
   const fetchBooks = async () => {
     try {
@@ -38,9 +32,9 @@ const Profile = (props: Props) => {
     <Grid style={styles.mainGrid}>
       <Row size={0.75}>
         <Col style={styles.profileInfo}>
-          <Thumbnail style={styles.avatar} source={{ uri: user.photo || '' }} />
-          <H1>{user.name}</H1>
-          <Text style={styles.bio}>{userBiography}</Text>
+          <Thumbnail style={styles.avatar} source={{ uri: user.avatarUrl }} />
+          <H1>{user.fullName}</H1>
+          <Text style={styles.bio}>{user.email}</Text>
           <Row>
             <Button
               rounded

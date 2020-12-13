@@ -1,8 +1,8 @@
-import { User } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
-import { Button, Col, Container, Icon, Row, View } from 'native-base';
+import { Button, Icon, Row, Text, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
 
 export type Book = {
@@ -12,97 +12,62 @@ export type Book = {
   userId: string;
 };
 
-type Props = {
-  user: User;
-};
+const Home = (props: { user: User }) => {
+  const { user } = props;
 
-const Home = (props: Props) => {
   const [books, setBooks] = useState<Array<Book>>();
-  const user = props.user.user;
-
-  const fetchBooks = async () => {
-    try {
-      const data = await firestore()
-        .collection('books')
-        .where('userId', '!=', user.id)
-        .get();
-      const arrayData = data.docs.map((document) => document.data() as Book);
-      setBooks(arrayData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const booksToShow = await firestore()
+          .collection('books')
+          .where('userId', '!=', user.id)
+          .get();
+        const booksToShowData = booksToShow.docs.map(
+          (bookDocument) => bookDocument.data() as Book,
+        );
+        setBooks(booksToShowData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchBooks();
-  });
+  }, [user]);
 
   return (
-    <Container>
+    <>
       <View style={styles.cardSwiper}>
-        {books ? <BookCardSwiper books={books} userId={user.id} /> : null}
+        {books ? <BookCardSwiper books={books} user={user} /> : null}
       </View>
-      <Row size={0.2} style={styles.row}>
-        <Col size={0.5}>
-          <Button style={styles.passBtn}>
-            <Icon
-              style={styles.passIcon}
-              name="close"
-              type="MaterialCommunityIcons"
-            />
-          </Button>
-        </Col>
-        <Col size={0.5}>
-          <Button style={styles.likeBtn}>
-            <Icon
-              style={styles.likeIcon}
-              name="star"
-              type="MaterialCommunityIcons"
-            />
-          </Button>
-        </Col>
+      <Row style={styles.instructionsRow}>
+        <Button transparent>
+          <Icon style={styles.icon} name="undo" type="MaterialCommunityIcons" />
+          <Text style={styles.action}>Dislike</Text>
+        </Button>
+        <Button transparent>
+          <Text style={styles.action}>Like</Text>
+          <Icon style={styles.icon} name="redo" type="MaterialCommunityIcons" />
+        </Button>
       </Row>
-    </Container>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   cardSwiper: {
-    position: 'relative',
-    flex: 0.8,
-    top: 25,
-    left: 25,
+    top: '15%',
+    left: '6%',
   },
-  row: {
-    alignItems: 'center',
+  instructionsRow: {
+    top: '10%',
+    justifyContent: 'space-evenly',
   },
-  passBtn: {
-    height: 80,
-    width: 80,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    borderColor: 'crimson',
-    borderWidth: 5,
-    borderRadius: 40,
+  action: {
+    fontSize: 20,
   },
-  passIcon: {
+  icon: {
     fontSize: 40,
-    color: 'crimson',
-  },
-  likeBtn: {
-    height: 80,
-    width: 80,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    borderColor: 'goldenrod',
-    borderWidth: 5,
-    borderRadius: 40,
-  },
-  likeIcon: {
-    fontSize: 40,
-    color: 'goldenrod',
   },
 });
 
