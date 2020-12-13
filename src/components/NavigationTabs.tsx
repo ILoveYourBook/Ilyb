@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Icon, Tab, TabHeading, Tabs } from 'native-base';
 import React, { useState } from 'react';
 import { User } from '../models/User';
-import Chat from './Chat';
+import Matches from './Matches';
 import Home from './Home';
 import Profile from './Profile';
 
@@ -39,10 +39,10 @@ const NavigationTabs = (props: { user: User }) => {
       <Tab
         heading={
           <TabHeading>
-            <Icon name="chat-bubble" type="MaterialIcons" />
+            <Icon name="star" type="MaterialCommunityIcons" />
           </TabHeading>
         }>
-        <Chat />
+        <Matches user={user} />
       </Tab>
     </Tabs>
   );
