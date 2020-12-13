@@ -44,7 +44,10 @@ const Profile = (props: Props) => {
         </Col>
       </Row>
       <Row size={0.25} style={styles.logOutBtnRow}>
-        <Button danger style={styles.logoutBtn}>
+        <Button
+          danger
+          onPress={() => Actions.popTo('loading')}
+          style={styles.logoutBtn}>
           <Text>Log out</Text>
         </Button>
       </Row>
