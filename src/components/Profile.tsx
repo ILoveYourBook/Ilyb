@@ -22,7 +22,10 @@ const Profile = (props: Props) => {
           <H1>{user.name}</H1>
           <Text style={styles.bio}>{userBiography}</Text>
           <Row>
-            <Button rounded style={styles.numberOfBooksBtn}>
+            <Button
+              rounded
+              style={styles.numberOfBooksBtn}
+              onPress={() => Actions.uploadedBooks({ user })}>
               <Icon
                 name="menu-book"
                 type="MaterialIcons"
@@ -31,13 +34,11 @@ const Profile = (props: Props) => {
               <Text>Books: {numberOfBooks}</Text>
             </Button>
 
-            <Button success style={styles.addBookBtn}>
-              <Icon
-                name="add"
-                type="MaterialIcons"
-                style={styles.addIcon}
-                onPress={() => Actions.uploadBook({ user })}
-              />
+            <Button
+              success
+              style={styles.addBookBtn}
+              onPress={() => Actions.uploadBook({ user })}>
+              <Icon name="add" type="MaterialIcons" style={styles.addIcon} />
             </Button>
           </Row>
         </Col>
