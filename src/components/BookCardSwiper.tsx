@@ -21,31 +21,33 @@ export const BookCardSwiper = (props: Props) => {
   const userId = props.userId;
   let thisDeck: DeckSwiper;
 
+  const swipeRight = async () => {
+    try {
+      const likedUserId = thisDeck._root.state.selectedItem.userId;
+      await firestore()
+        .collection('users')
+        .doc(userId)
+        .update({
+          likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
+        });
+      const likedUser = (
+        await firestore().collection('users').doc(likedUserId).get()
+      ).data();
+      if (likedUser && likedUser.likedUsers.includes(userId)) {
+        console.log('MATCH');
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
     <DeckSwiper
       ref={(deck) => {
         deck ? (thisDeck = deck) : null;
       }}
       dataSource={books}
-      onSwipeRight={async () => {
-        try {
-          const likedUserId = thisDeck._root.state.selectedItem.userId;
-          await firestore()
-            .collection('users')
-            .doc(userId)
-            .update({
-              likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
-            });
-          const likedUser = (
-            await firestore().collection('users').doc(likedUserId).get()
-          ).data();
-          if (likedUser && likedUser.likedUsers.includes(userId)) {
-            console.log('MATCH');
-          }
-        } catch (error) {
-          throw error;
-        }
-      }}
+      onSwipeRight={swipeRight}
       renderItem={(item: Book) => {
         return (
           <Card style={styles.card}>
