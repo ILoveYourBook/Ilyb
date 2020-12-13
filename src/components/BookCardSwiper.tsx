@@ -71,7 +71,7 @@ export const BookCardSwiper = (props: Props) => {
 const styles = StyleSheet.create({
   card: {
     elevation: 4,
-    width: 300,
+    width: 310,
     height: 454,
   },
   cardImg: {

@@ -64,6 +64,7 @@ const Home = (props: Props) => {
 
 const styles = StyleSheet.create({
   cardSwiper: {
+    position: 'relative',
     flex: 0.8,
     top: 25,
     left: 25,
