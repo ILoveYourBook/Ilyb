@@ -8,7 +8,7 @@ import { User } from '../models/User';
 
 const Profile = (props: { user: User }) => {
   const { user } = props;
-
+  const selectedUser = user;
   const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Profile = (props: { user: User }) => {
       }
     };
     fetchBooks();
-  });
+  }, [user]);
 
   return (
     <Grid style={styles.mainGrid}>
@@ -38,7 +38,9 @@ const Profile = (props: { user: User }) => {
             <Button
               rounded
               style={styles.numberOfBooksBtn}
-              onPress={() => Actions.uploadedBooks({ user })}>
+              onPress={() =>
+                Actions.uploadedBooks({ selectedUser, isLoggedUser: true })
+              }>
               <Icon
                 name="menu-book"
                 type="MaterialIcons"
@@ -50,7 +52,7 @@ const Profile = (props: { user: User }) => {
             <Button
               success
               style={styles.addBookBtn}
-              onPress={() => Actions.uploadBook({ user, isLoggedUser: true })}>
+              onPress={() => Actions.uploadBook({ user })}>
               <Icon name="add" type="MaterialIcons" style={styles.addIcon} />
             </Button>
           </Row>

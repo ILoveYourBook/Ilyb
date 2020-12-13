@@ -17,17 +17,23 @@ import { Alert, StyleSheet } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
 
-const UploadedBooks = (props: { user: User; isLoggedUser: boolean }) => {
-  const { user } = props;
+const UploadedBooks = (props: {
+  selectedUser: User;
+  isLoggedUser: boolean;
+}) => {
+  const { selectedUser } = props;
   const { isLoggedUser } = props;
-
+  const selectedUserFirstName = selectedUser.fullName.substr(
+    0,
+    selectedUser.fullName.indexOf(' '),
+  );
   const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
 
   const getBookDocumentId = async (key: number): Promise<string> => {
     try {
       const data = await firestore()
         .collection('books')
-        .where('userId', '==', user.id)
+        .where('userId', '==', selectedUser.id)
         .get();
 
       const documentId = data.docs[key].id;
@@ -51,7 +57,7 @@ const UploadedBooks = (props: { user: User; isLoggedUser: boolean }) => {
     try {
       const data = await firestore()
         .collection('books')
-        .where('userId', '==', user.id)
+        .where('userId', '==', selectedUser.id)
         .get();
       const arrayData = data.docs.map((document) => document.data() as Book);
       setUploadedBooks(arrayData);
@@ -67,7 +73,7 @@ const UploadedBooks = (props: { user: User; isLoggedUser: boolean }) => {
   const BookList = (books: Array<Book>) => {
     return (
       <Container>
-        <H1 style={styles.header}>Your books</H1>
+        <H1 style={styles.header}>{selectedUserFirstName}'s books</H1>
         <List>
           {books.map((book, key: number) => {
             return (
