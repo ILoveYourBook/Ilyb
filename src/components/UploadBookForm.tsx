@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignSelf: 'center',
     width: 180,
-    aspectRatio: 9 / 16,
+    aspectRatio: 3 / 4,
     margin: 20,
   },
   buttonsRow: {

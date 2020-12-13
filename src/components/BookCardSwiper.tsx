@@ -48,7 +48,6 @@ export const BookCardSwiper = (props: Props) => {
       }}
       dataSource={books}
       onSwipeRight={async () => await swipeRight()}
-      onSwipeLeft={async () => await swipeRight()}
       renderItem={(item: Book) => {
         return (
           <Card style={styles.card}>
@@ -78,12 +77,12 @@ export const BookCardSwiper = (props: Props) => {
 const styles = StyleSheet.create({
   card: {
     elevation: 4,
-    width: 310,
-    height: 454,
+    width: 340,
+    aspectRatio: 3 / 4,
   },
   cardImg: {
-    height: 453,
-    flex: 1,
+    width: 339,
+    aspectRatio: 3 / 4,
   },
   cardInfo: {
     position: 'absolute',
