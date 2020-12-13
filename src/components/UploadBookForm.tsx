@@ -9,13 +9,12 @@ import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
 import { Actions } from 'react-native-router-flux';
 import { v4 as uuid } from 'uuid';
+import { User } from '../models/User';
 import { Book } from './Home';
 
-type Props = {
-  user: { id: string };
-};
+const UploadBookForm = (props: { user: User }) => {
+  const { user } = props;
 
-const UploadBookForm = (props: Props) => {
   const { control, handleSubmit } = useForm<Book>();
   const [localPath, setLocalPath] = useState<string>();
 
@@ -31,7 +30,7 @@ const UploadBookForm = (props: Props) => {
         title: book.title,
         author: book.author,
         image: imageUrl,
-        userId: props.user.id,
+        userId: user.id,
       });
       Actions.pop();
     } catch (error) {

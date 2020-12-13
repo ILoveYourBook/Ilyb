@@ -10,15 +10,15 @@ import {
 } from 'native-base';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
+import { User } from '../models/User';
 import { Book } from './Home';
 export interface Props {
   books: Array<Book>;
-  userId: string;
+  user: User;
 }
 
 export const BookCardSwiper = (props: Props) => {
-  const books = props.books;
-  const userId = props.userId;
+  const { books, user } = props;
   let thisDeck: DeckSwiper;
 
   return (
@@ -31,14 +31,14 @@ export const BookCardSwiper = (props: Props) => {
         const likedUserId = thisDeck._root.state.selectedItem.userId;
         await firestore()
           .collection('users')
-          .doc(userId)
+          .doc(user.id)
           .update({
             likedUsers: firestore.FieldValue.arrayUnion(likedUserId),
           });
         const likedUser = (
           await firestore().collection('users').doc(likedUserId).get()
         ).data();
-        if (likedUser && likedUser.likedUsers.includes(userId)) {
+        if (likedUser && likedUser.likedUsers.includes(user.id)) {
           console.log('MATCH');
         }
       }}

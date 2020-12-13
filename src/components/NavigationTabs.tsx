@@ -1,24 +1,32 @@
-import { User } from '@react-native-community/google-signin';
+import firestore from '@react-native-firebase/firestore';
 import { Icon, Tab, TabHeading, Tabs } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
+import { User } from '../models/User';
 import Chat from './Chat';
 import Home from './Home';
 import Profile from './Profile';
 
-type Props = {
-  user: User;
-};
+const NavigationTabs = (props: { user: User }) => {
+  const [user, setUser] = useState<User>(props.user);
 
-const NavigationTabs = (props: Props) => {
+  const fetchUser = async () => {
+    const userDocument = await firestore()
+      .collection('users')
+      .doc(user.id)
+      .get();
+    const userData = userDocument.data() as User;
+    setUser(userData);
+  };
+
   return (
-    <Tabs initialPage={1} locked>
+    <Tabs initialPage={1} onChangeTab={fetchUser} locked>
       <Tab
         heading={
           <TabHeading>
             <Icon name="account-circle" type="MaterialIcons" />
           </TabHeading>
         }>
-        <Profile user={props.user} />
+        {user ? <Profile user={user} /> : null}
       </Tab>
       <Tab
         heading={
@@ -26,7 +34,7 @@ const NavigationTabs = (props: Props) => {
             <Icon name="home" type="MaterialIcons" />
           </TabHeading>
         }>
-        <Home user={props.user} />
+        {user ? <Home user={user} /> : null}
       </Tab>
       <Tab
         heading={

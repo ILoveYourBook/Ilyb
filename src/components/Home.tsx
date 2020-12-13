@@ -1,8 +1,8 @@
-import { User } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import { Button, Col, Container, Icon, Row, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
 
 export type Book = {
@@ -12,20 +12,19 @@ export type Book = {
   userId: string;
 };
 
-type Props = {
-  user: User;
-};
+const Home = (props: { user: User }) => {
+  const { user } = props;
 
-const Home = (props: Props) => {
   const [books, setBooks] = useState<Array<Book>>();
-  const user = props.user.user;
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const data = await firestore().collection('books').get();
-        const arrayData = data.docs.map((document) => document.data() as Book);
-        setBooks(arrayData);
+        const booksCollection = await firestore().collection('books').get();
+        const booksArray = booksCollection.docs.map(
+          (bookDocument) => bookDocument.data() as Book,
+        );
+        setBooks(booksArray);
       } catch (error) {
         console.log(error);
       }
@@ -36,7 +35,7 @@ const Home = (props: Props) => {
   return (
     <Container>
       <View style={styles.cardSwiper}>
-        {books ? <BookCardSwiper books={books} userId={user.id} /> : null}
+        {books ? <BookCardSwiper books={books} user={user} /> : null}
       </View>
       <Row size={0.2} style={styles.row}>
         <Col size={0.5}>
