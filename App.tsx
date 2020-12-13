@@ -1,10 +1,11 @@
-import {GoogleSignin} from '@react-native-community/google-signin';
-import React, {useEffect} from 'react';
-import {Router, Scene} from 'react-native-router-flux';
+import { GoogleSignin } from '@react-native-community/google-signin';
+import React, { useEffect } from 'react';
+import { Router, Scene } from 'react-native-router-flux';
 import env from './.env';
 import NavigationTabs from './src/components/NavigationTabs';
 import SignIn from './src/components/SignIn';
 import UploadBookForm from './src/components/UploadBookForm';
+import UploadedBooks from './src/components/UploadedBooks';
 
 const App = () => {
   useEffect(() => {
@@ -35,6 +36,12 @@ const App = () => {
           component={UploadBookForm}
           hideNavBar={true}
           title="UploadBookForm"
+        />
+        <Scene
+          key="uploadedBooks"
+          component={UploadedBooks}
+          hideNavBar={true}
+          title="UploadedBooks"
         />
       </Scene>
     </Router>
