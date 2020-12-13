@@ -1,18 +1,38 @@
 import { User } from '@react-native-community/google-signin';
 import { Button, Col, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import firestore from '@react-native-firebase/firestore';
+import { Book } from './Home';
 
 type Props = {
   user: User;
 };
 
 const Profile = (props: Props) => {
+  const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
+
   const user = props.user.user;
-  const numberOfBooks = 21;
   const userBiography =
     'This is my biography, where I should tell the people I match which are my interests in books.';
+
+  const fetchBooks = async () => {
+    try {
+      const data = await firestore()
+        .collection('books')
+        .where('userId', '==', user.id)
+        .get();
+      const arrayData = data.docs.map((document) => document.data() as Book);
+      setUploadedBooks(arrayData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  });
 
   return (
     <Grid style={styles.mainGrid}>
@@ -31,7 +51,7 @@ const Profile = (props: Props) => {
                 type="MaterialIcons"
                 style={styles.bookIcon}
               />
-              <Text>Books: {numberOfBooks}</Text>
+              <Text>Books: {uploadedBooks?.length}</Text>
             </Button>
 
             <Button
@@ -44,7 +64,10 @@ const Profile = (props: Props) => {
         </Col>
       </Row>
       <Row size={0.25} style={styles.logOutBtnRow}>
-        <Button danger style={styles.logoutBtn}>
+        <Button
+          danger
+          onPress={() => Actions.popTo('loading')}
+          style={styles.logoutBtn}>
           <Text>Log out</Text>
         </Button>
       </Row>
