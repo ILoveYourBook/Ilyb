@@ -47,7 +47,8 @@ export const BookCardSwiper = (props: Props) => {
         deck ? (thisDeck = deck) : null;
       }}
       dataSource={books}
-      onSwipeRight={swipeRight}
+      onSwipeRight={async () => await swipeRight()}
+      onSwipeLeft={async () => await swipeRight()}
       renderItem={(item: Book) => {
         return (
           <Card style={styles.card}>

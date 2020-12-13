@@ -20,18 +20,22 @@ const Home = (props: Props) => {
   const [books, setBooks] = useState<Array<Book>>();
   const user = props.user.user;
 
+  const fetchBooks = async () => {
+    try {
+      const data = await firestore()
+        .collection('books')
+        .where('userId', '!=', user.id)
+        .get();
+      const arrayData = data.docs.map((document) => document.data() as Book);
+      setBooks(arrayData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const data = await firestore().collection('books').get();
-        const arrayData = data.docs.map((document) => document.data() as Book);
-        setBooks(arrayData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchBooks();
-  }, []);
+  });
 
   return (
     <Container>
