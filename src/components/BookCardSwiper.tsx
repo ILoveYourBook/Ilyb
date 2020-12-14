@@ -1,5 +1,13 @@
 import firestore from '@react-native-firebase/firestore';
-import { Body, Button, Card, CardItem, DeckSwiper, Icon, Text } from 'native-base';
+import {
+  Body,
+  Button,
+  Card,
+  CardItem,
+  DeckSwiper,
+  Icon,
+  Text,
+} from 'native-base';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { User } from '../models/User';
@@ -37,6 +45,13 @@ export const BookCardSwiper = (props: Props) => {
       .doc(user.id)
       .update({
         matchedProfileIds: firestore.FieldValue.arrayUnion(swipedBookProfileId),
+      });
+
+    await firestore()
+      .collection('users')
+      .doc(swipedBookProfileId)
+      .update({
+        matchedProfileIds: firestore.FieldValue.arrayUnion(user.id),
       });
   };
 
