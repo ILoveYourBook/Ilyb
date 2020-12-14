@@ -76,6 +76,7 @@ export const BookCardSwiper = (props: Props) => {
               <Body>
                 <Text>{item.title}</Text>
                 <Text>{item.author}</Text>
+                <Text>{item.distance} km away</Text>
               </Body>
               <Button style={styles.infoBtn}>
                 <Icon
