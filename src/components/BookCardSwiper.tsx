@@ -12,6 +12,8 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
+import { Actions } from 'react-native-router-flux';
+
 export interface Props {
   books: Array<Book>;
   user: User;
@@ -82,6 +84,7 @@ export const BookCardSwiper = (props: Props) => {
                   name="info"
                   type="MaterialIcons"
                   style={styles.infoIcon}
+                  onPress={() => Actions.detailedInfo(item)}
                 />
               </Button>
             </CardItem>
