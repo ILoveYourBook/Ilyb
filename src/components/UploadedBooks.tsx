@@ -13,7 +13,7 @@ import {
   Thumbnail,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import { Book } from './Home';
@@ -24,10 +24,7 @@ const UploadedBooks = (props: {
 }) => {
   const { selectedUser } = props;
   const { isLoggedUser } = props;
-  const selectedUserFirstName = selectedUser.fullName.substr(
-    0,
-    selectedUser.fullName.indexOf(' '),
-  );
+  const splittedFullname = selectedUser.fullName.split(' ');
   const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
 
   const getBookDocumentId = async (key: number): Promise<string> => {
@@ -74,7 +71,7 @@ const UploadedBooks = (props: {
   const BookList = (books: Array<Book>) => {
     return (
       <Container>
-        <H1 style={styles.header}>{selectedUserFirstName}'s books</H1>
+        <H1 style={styles.header}>{splittedFullname[0]}'s books</H1>
         <List>
           {books.map((book, key: number) => {
             return (
