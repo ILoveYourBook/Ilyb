@@ -12,6 +12,8 @@ import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
+import { Actions } from 'react-native-router-flux';
+
 export interface Props {
   books: Array<Book>;
   user: User;
@@ -66,22 +68,23 @@ export const BookCardSwiper = (props: Props) => {
       }}
       dataSource={books}
       onSwipeRight={onSwipeRight}
-      renderItem={(item: Book) => {
+      renderItem={(book: Book) => {
         return (
           <Card style={styles.card}>
             <CardItem cardBody>
-              <Image style={styles.cardImg} source={{ uri: item.image }} />
+              <Image style={styles.cardImg} source={{ uri: book.image }} />
             </CardItem>
             <CardItem style={styles.cardInfo}>
               <Body>
-                <Text>{item.title}</Text>
-                <Text>{item.author}</Text>
+                <Text>{book.title}</Text>
+                <Text>{book.author}</Text>
               </Body>
               <Button style={styles.infoBtn}>
                 <Icon
                   name="info"
                   type="MaterialIcons"
                   style={styles.infoIcon}
+                  onPress={() => Actions.detailedInfo({ book })}
                 />
               </Button>
             </CardItem>
