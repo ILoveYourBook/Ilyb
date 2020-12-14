@@ -13,6 +13,8 @@ import { Image, StyleSheet, ToastAndroid } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
 import { Actions } from 'react-native-router-flux';
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
 
 export interface Props {
   books: Array<Book>;
