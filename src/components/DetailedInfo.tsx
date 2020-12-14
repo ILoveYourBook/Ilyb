@@ -1,43 +1,31 @@
 import React from 'react';
-import { Icon, View, Button } from 'native-base';
+import { Container, Text, H1, H3 } from 'native-base';
 import { Image, StyleSheet } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 
 import { Book } from './Home';
 
-const onSubmit = async () => {
-  Actions.pop();
-};
-
-type Props = {
-  book: Book;
-};
-
-const DetailedInfo = (props: Props) => {
-  const book = props.book;
+const DetailedInfo = (props: { book: Book }) => {
+  const { book } = props;
   return (
-    <View style={styles.container}>
+    <Container style={styles.container}>
+      <H1 style={styles.title}>{book.title}</H1>
+      <H3 style={styles.author}>{book.author}</H3>
       <Image style={styles.img} source={{ uri: book.image }} />
-      <Button style={styles.backBtn} onPress={onSubmit}>
-        <Icon
-          style={styles.backIcon}
-          name="arrow-left-thick"
-          type="MaterialCommunityIcons"
-        />
-      </Button>
-    </View>
+      <Text style={styles.opinion}>{book.opinion}</Text>
+    </Container>
   );
 };
 
 const styles = StyleSheet.create({
   img: {
     height: 453,
-    flex: 1,
+    aspectRatio: 3 / 4,
+    alignSelf: 'center',
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
   welcome: {
     fontSize: 20,
@@ -57,6 +45,18 @@ const styles = StyleSheet.create({
   backIcon: {
     fontSize: 40,
     color: 'grey',
+  },
+  title: {
+    marginTop: 40,
+  },
+  author: {
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  opinion: {
+    marginBottom: 20,
+    marginTop: 10,
+    alignSelf: 'flex-start',
   },
 });
 

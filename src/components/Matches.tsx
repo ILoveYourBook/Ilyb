@@ -26,7 +26,7 @@ const Matches = (props: { user: any }) => {
       try {
         const data = await firestore()
           .collection('users')
-          .where('id', 'in', user.matchedProfiles)
+          .where('id', 'in', user.matchedProfileIds)
           .get();
         const arrayData = data.docs.map((document) => document.data() as User);
         setMatchedUsers(arrayData);
