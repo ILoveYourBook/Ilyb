@@ -38,7 +38,6 @@ export const BookCardSwiper = (props: Props) => {
     const userOfSwipedBook = (
       await firestore().collection('users').doc(swipedBookProfileId).get()
     ).data() as User;
-    ToastAndroid.show("It's a match!", ToastAndroid.SHORT);
     return userOfSwipedBook.likedProfileIds.includes(user.id);
   };
 
@@ -64,7 +63,7 @@ export const BookCardSwiper = (props: Props) => {
       await likeProfile(swipedBookProfileId);
       if (await itIsAMatch(swipedBookProfileId)) {
         addMatchedProfile(swipedBookProfileId);
-        console.log('MATCH');
+        ToastAndroid.show("It's a match!", ToastAndroid.SHORT);
       }
     } catch (error) {
       throw error;
