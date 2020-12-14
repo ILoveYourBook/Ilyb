@@ -42,7 +42,7 @@ export const BookCardSwiper = (props: Props) => {
       .collection('users')
       .doc(user.id)
       .update({
-        matchedProfiles: firestore.FieldValue.arrayUnion(swipedBookProfileId),
+        matchedProfileIds: firestore.FieldValue.arrayUnion(swipedBookProfileId),
       });
   };
 
