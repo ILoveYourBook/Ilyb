@@ -14,6 +14,7 @@ import {
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import { Book } from './Home';
 
@@ -77,7 +78,10 @@ const UploadedBooks = (props: {
         <List>
           {books.map((book, key: number) => {
             return (
-              <ListItem key={key} onPress={() => Alert.alert('TBD')} thumbnail>
+              <ListItem
+                key={key}
+                onPress={() => Actions.detailedInfo({ book })}
+                thumbnail>
                 <Left>
                   <Thumbnail square source={{ uri: book.image }} />
                 </Left>

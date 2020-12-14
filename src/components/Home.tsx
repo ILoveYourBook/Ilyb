@@ -11,6 +11,7 @@ export type Book = {
   author: string;
   image: string;
   userId: string;
+  opinion: string;
   distance?: number;
 };
 

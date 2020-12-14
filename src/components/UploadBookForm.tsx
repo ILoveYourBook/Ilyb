@@ -36,6 +36,7 @@ const UploadBookForm = (props: { user: User }) => {
       await firestore().collection('books').add({
         title: book.title,
         author: book.author,
+        opinion: book.opinion,
         image: imageUrl,
         userId: user.id,
       });
@@ -63,7 +64,7 @@ const UploadBookForm = (props: { user: User }) => {
         )}
         {/* <Image source={require('../assets/image-preview.png')} /> */}
         <Grid>
-          <Row size={0.2}>
+          <Row size={0.15}>
             <Controller
               name="title"
               defaultValue=""
@@ -79,7 +80,7 @@ const UploadBookForm = (props: { user: User }) => {
               control={control}
             />
           </Row>
-          <Row size={0.2}>
+          <Row size={0.15}>
             <Controller
               name="author"
               defaultValue=""
@@ -95,7 +96,25 @@ const UploadBookForm = (props: { user: User }) => {
               )}
             />
           </Row>
-          <Row style={styles.buttonsRow} size={0.6}>
+          <Row size={0.3}>
+            <Controller
+              name="opinion"
+              defaultValue=""
+              rules={{ required: true }}
+              control={control}
+              render={({ onChange, value }) => (
+                <TextInput
+                  textAlignVertical="top"
+                  multiline={true}
+                  style={styles.input}
+                  placeholder="Opinion"
+                  value={value}
+                  onChangeText={(value) => onChange(value)}
+                />
+              )}
+            />
+          </Row>
+          <Row style={styles.buttonsRow} size={0.2}>
             <Button
               style={styles.cameraButton}
               onPress={async () => {
@@ -125,16 +144,12 @@ const UploadBookForm = (props: { user: User }) => {
 };
 
 const styles = StyleSheet.create({
-  mainView: {
-    flex: 1,
-  },
   container: {
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 40,
   },
   input: {
     width: 260,
-    height: 40,
     backgroundColor: 'lightgray',
     borderRadius: 6,
     padding: 6,
