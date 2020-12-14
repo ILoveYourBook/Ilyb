@@ -9,7 +9,7 @@ import {
   Text,
 } from 'native-base';
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, ToastAndroid } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
 import { Actions } from 'react-native-router-flux';
@@ -36,6 +36,7 @@ export const BookCardSwiper = (props: Props) => {
     const userOfSwipedBook = (
       await firestore().collection('users').doc(swipedBookProfileId).get()
     ).data() as User;
+    ToastAndroid.show("It's a match!", ToastAndroid.SHORT);
     return userOfSwipedBook.likedProfileIds.includes(user.id);
   };
 
