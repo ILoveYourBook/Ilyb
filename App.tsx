@@ -43,6 +43,12 @@ const App = () => {
           hideNavBar={true}
           title="UploadedBooks"
         />
+        <Scene
+          key="detailedInfo"
+          component={DetailedInfo}
+          hideNavBar={true}
+          title="DetailedInfo"
+        />
       </Scene>
     </Router>
   );
