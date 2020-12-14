@@ -1,13 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import {
-  Body,
-  Button,
-  Card,
-  CardItem,
-  DeckSwiper,
-  Icon,
-  Text,
-} from 'native-base';
+import { Body, Button, Card, CardItem, DeckSwiper, Icon, Text } from 'native-base';
 import React from 'react';
 import { Image, StyleSheet } from 'react-native';
 import { User } from '../models/User';
@@ -76,9 +68,9 @@ export const BookCardSwiper = (props: Props) => {
             </CardItem>
             <CardItem style={styles.cardInfo}>
               <Body>
-                <Text>{item.title}</Text>
-                <Text>{item.author}</Text>
-                <Text>{item.distance} km away</Text>
+                <Text>{book.title}</Text>
+                <Text>{book.author}</Text>
+                <Text>{book.distance} km away</Text>
               </Body>
               <Button style={styles.infoBtn}>
                 <Icon
