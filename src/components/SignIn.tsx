@@ -5,7 +5,13 @@ import {
 } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  PermissionsAndroid,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import Geolocation from 'react-native-geolocation-service';
@@ -32,7 +38,7 @@ const SignIn = () => {
     (await existsUserWithId(id))
       ? (currentUser = await getUserFromId(id))
       : (currentUser = await createNewUser({ id, email, fullName, avatarUrl }));
-    saveUserLocation(id);
+    await saveUserLocation(id);
     setUser(currentUser);
   };
 
@@ -65,7 +71,10 @@ const SignIn = () => {
     return newUser;
   };
 
-  const saveUserLocation = (userId: string) => {
+  const saveUserLocation = async (userId: string) => {
+    await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
     Geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
