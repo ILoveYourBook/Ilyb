@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
+import Geolocation from 'react-native-geolocation-service';
 
 const SignIn = () => {
   const [user, setUser] = useState<User>();
@@ -31,6 +32,7 @@ const SignIn = () => {
     (await existsUserWithId(id))
       ? (currentUser = await getUserFromId(id))
       : (currentUser = await createNewUser({ id, email, fullName, avatarUrl }));
+    saveUserLocation(id);
     setUser(currentUser);
   };
 
@@ -57,9 +59,26 @@ const SignIn = () => {
       avatarUrl: params.avatarUrl!,
       likedProfileIds: [],
       matchedProfileIds: [],
+      lastLocation: { latitude: 0, longitude: 0 },
     };
     await firestore().collection('users').doc(newUser.id).set(newUser);
     return newUser;
+  };
+
+  const saveUserLocation = (userId: string) => {
+    Geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        await firestore()
+          .collection('users')
+          .doc(userId)
+          .update({ lastLocation: { latitude, longitude } });
+      },
+      (error) => {
+        console.log(error.code, error.message);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+    );
   };
 
   return (

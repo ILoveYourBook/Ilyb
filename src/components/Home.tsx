@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
+import { getDistance } from 'geolib';
 
 export type Book = {
   title: string;
@@ -11,6 +12,7 @@ export type Book = {
   image: string;
   userId: string;
   opinion: string;
+  distance?: number;
 };
 
 const Home = (props: { user: User }) => {
@@ -21,20 +23,36 @@ const Home = (props: { user: User }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const booksToShow = await firestore()
+        const booksCollection = await firestore()
           .collection('books')
           .where('userId', '!=', user.id)
           .get();
-        const booksToShowData = booksToShow.docs.map(
-          (bookDocument) => bookDocument.data() as Book,
-        );
-        setBooks(booksToShowData);
+        const booksWithDistance = await getBooks(booksCollection);
+        setBooks(booksWithDistance);
       } catch (error) {
         console.log(error);
       }
     };
     fetchBooks();
   }, [user]);
+
+  const getBooks = async (booksCollection: any) => {
+    let books: Book[] = [];
+    for (const bookDocument of booksCollection.docs) {
+      const book = bookDocument.data() as Book;
+      const bookOwnerLocation = await getBookOwnerLocation(book);
+      const distance = Math.round(getDistance(user.lastLocation, bookOwnerLocation) / 1000);
+      const bookWithDistance = { ...book, distance };
+      books.push(bookWithDistance);
+    }
+    return books;
+  };
+
+  const getBookOwnerLocation = async (book: Book) => {
+    const bookOwnerDocument = await firestore().collection('users').doc(book.userId).get();
+    const bookOwnerData = bookOwnerDocument.data() as User;
+    return bookOwnerData.lastLocation;
+  };
 
   return (
     <>

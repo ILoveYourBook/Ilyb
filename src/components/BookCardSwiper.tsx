@@ -76,8 +76,9 @@ export const BookCardSwiper = (props: Props) => {
             </CardItem>
             <CardItem style={styles.cardInfo}>
               <Body>
-                <Text>{book.title}</Text>
-                <Text>{book.author}</Text>
+                <Text>{item.title}</Text>
+                <Text>{item.author}</Text>
+                <Text>{item.distance} km away</Text>
               </Body>
               <Button style={styles.infoBtn}>
                 <Icon
