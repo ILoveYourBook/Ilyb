@@ -60,6 +60,7 @@ export const BookCardSwiper = (props: Props) => {
   const onSwipeRight = async () => {
     try {
       const swipedBookProfileId = thisDeck._root.state.selectedItem.userId;
+      books.shift();
       await likeProfile(swipedBookProfileId);
       if (await itIsAMatch(swipedBookProfileId)) {
         addMatchedProfile(swipedBookProfileId);
@@ -77,6 +78,9 @@ export const BookCardSwiper = (props: Props) => {
       }}
       dataSource={books}
       onSwipeRight={onSwipeRight}
+      onSwipeLeft={() => {
+        books.shift();
+      }}
       renderItem={(book: Book) => {
         return (
           <Card style={styles.card}>
@@ -108,17 +112,17 @@ export const BookCardSwiper = (props: Props) => {
 const styles = StyleSheet.create({
   card: {
     elevation: 4,
-    width: 340,
+    width: '80%',
     aspectRatio: 3 / 4,
   },
   cardImg: {
-    width: 339,
+    width: '100%',
     aspectRatio: 3 / 4,
   },
   cardInfo: {
     position: 'absolute',
     bottom: 0,
-    opacity: 0.9,
+    opacity: 0.8,
   },
   infoBtn: {
     alignSelf: 'center',

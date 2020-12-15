@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
-import { Button, Icon, Row, Text, View } from 'native-base';
+import { Button, Grid, Icon, Row, Text, View } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
 import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
 import { getDistance } from 'geolib';
@@ -17,9 +17,20 @@ export type Book = {
 
 const Home = (props: { user: User }) => {
   const { user } = props;
-  console.log(user);
-
   const [books, setBooks] = useState<Array<Book>>();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const wait = (timeout: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await fetchBooks();
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
 
   const getBooks = useCallback(
     async (booksCollection: any) => {
@@ -43,50 +54,72 @@ const Home = (props: { user: User }) => {
       .collection('users')
       .doc(book.userId)
       .get();
-    console.log(book.userId);
+    //console.log(book.userId);
     const bookOwnerData = bookOwnerDocument.data() as User;
     return bookOwnerData.lastLocation;
   };
 
+  const fetchBooks = async () => {
+    try {
+      const booksCollection = await firestore()
+        .collection('books')
+        .where('userId', '!=', user.id)
+        .get();
+      const booksWithDistance = await getBooks(booksCollection);
+      setBooks(booksWithDistance);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const booksCollection = await firestore()
-          .collection('books')
-          .where('userId', '!=', user.id)
-          .get();
-        const booksWithDistance = await getBooks(booksCollection);
-        setBooks(booksWithDistance);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchBooks();
   }, [getBooks, user]);
 
   return (
-    <>
-      <View style={styles.cardSwiper}>
-        {books ? <BookCardSwiper books={books} user={user} /> : null}
-      </View>
-      <Row style={styles.instructionsRow}>
-        <Button transparent>
-          <Icon style={styles.icon} name="undo" type="MaterialCommunityIcons" />
-          <Text style={styles.action}>Dislike</Text>
-        </Button>
-        <Button transparent>
-          <Text style={styles.action}>Like</Text>
-          <Icon style={styles.icon} name="redo" type="MaterialCommunityIcons" />
-        </Button>
-      </Row>
-    </>
+    <Grid>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <Row size={0.2} style={styles.instructionsRow}>
+          <Button transparent>
+            <Icon
+              style={styles.icon}
+              name="undo"
+              type="MaterialCommunityIcons"
+            />
+            <Text style={styles.action}>Dislike</Text>
+          </Button>
+          <Button transparent>
+            <Text style={styles.action}>Like</Text>
+            <Icon
+              style={styles.icon}
+              name="redo"
+              type="MaterialCommunityIcons"
+            />
+          </Button>
+        </Row>
+        <View style={styles.swiperContainer}>
+          {books && !refreshing ? (
+            <BookCardSwiper books={books} user={user} />
+          ) : null}
+        </View>
+        <Text style={styles.text}>
+          Looks like you run out of books...try refreshing!
+        </Text>
+      </ScrollView>
+    </Grid>
   );
 };
 
 const styles = StyleSheet.create({
-  cardSwiper: {
-    top: '15%',
-    left: '6%',
+  scrollView: {
+    flex: 1,
+  },
+  swiperContainer: {
+    left: '10%',
   },
   instructionsRow: {
     top: '10%',
@@ -97,6 +130,14 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 40,
+  },
+  text: {
+    top: '25%',
+    left: '25%',
+    width: '50%',
+    zIndex: -1,
+    textAlign: 'center',
+    fontSize: 21,
   },
 });
 
