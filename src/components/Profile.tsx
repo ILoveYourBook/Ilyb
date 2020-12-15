@@ -45,7 +45,7 @@ const Profile = (props: { user: User }) => {
 
   return (
     <RefreshControl
-      style={{ flex: 1 }}
+      style={styles.refreshControl}
       refreshing={refreshing}
       onRefresh={onRefresh}>
       <Grid style={styles.mainGrid}>
@@ -98,6 +98,9 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     alignItems: 'center',
+  },
+  refreshControl: {
+    flex: 1,
   },
   avatar: {
     width: '55%',
