@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { Button, Container, Grid, Icon, Row, Text, View } from 'native-base';
+import { Button, Grid, Icon, Row, Text, View } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
 import { User } from '../models/User';

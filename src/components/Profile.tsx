@@ -1,6 +1,6 @@
-import { Button, Col, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
+import { Button, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
 import { Book } from './Home';
