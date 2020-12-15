@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   cardInfo: {
     position: 'absolute',
     bottom: 0,
-    opacity: 0.9,
+    opacity: 0.8,
   },
   infoBtn: {
     alignSelf: 'center',
