@@ -106,9 +106,11 @@ const Home = (props: { user: User }) => {
             <BookCardSwiper books={books} user={user} />
           ) : null}
         </View>
-        <Text style={styles.text}>
-          Looks like you run out of books...try refreshing!
-        </Text>
+        {!refreshing ? (
+          <Text style={styles.text}>
+            Looks like you run out of books...try refreshing!
+          </Text>
+        ) : null}
       </ScrollView>
     </Grid>
   );
