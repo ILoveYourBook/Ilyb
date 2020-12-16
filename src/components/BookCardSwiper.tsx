@@ -136,6 +136,5 @@ const styles = StyleSheet.create({
   offBooksText: {
     textAlign: 'center',
     alignSelf: 'center',
-    alignContent: 'center',
   },
 });

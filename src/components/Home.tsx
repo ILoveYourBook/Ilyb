@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { Button, Grid, Icon, Row, Text, View } from 'native-base';
+import { Button, Grid, Icon, Row, Text } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
 import { User } from '../models/User';
@@ -18,7 +18,7 @@ export type Book = {
 const Home = (props: { user: User }) => {
   const { user } = props;
   const [books, setBooks] = useState<Array<Book>>();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const wait = (timeout: number) => {
     return new Promise((resolve) => {
@@ -26,7 +26,7 @@ const Home = (props: { user: User }) => {
     });
   };
 
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchBooks();
     wait(1000).then(() => setRefreshing(false));
@@ -101,7 +101,7 @@ const Home = (props: { user: User }) => {
             />
           </Button>
         </Row>
-        <Row size={1} style={{ justifyContent: 'center' }}>
+        <Row size={1}>
           {books && !refreshing ? (
             <BookCardSwiper books={books} user={user} />
           ) : null}
