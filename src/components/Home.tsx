@@ -101,7 +101,7 @@ const Home = (props: { user: User }) => {
             />
           </Button>
         </Row>
-        <Row size={1}>
+        <Row size={1} style={{ justifyContent: 'center' }}>
           {books && !refreshing ? (
             <BookCardSwiper books={books} user={user} />
           ) : null}

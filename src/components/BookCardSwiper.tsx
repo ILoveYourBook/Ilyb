@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
-import { Body, Button, Card, CardItem, Icon, Text } from 'native-base';
-import React from 'react';
+import { Body, Button, Card, CardItem, H1, Icon, Text } from 'native-base';
+import React, { useState } from 'react';
 import { Image, StyleSheet, ToastAndroid } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
@@ -14,6 +14,7 @@ export interface Props {
 
 export const BookCardSwiper = (props: Props) => {
   const { books, user } = props;
+  const [swipedAll, setSwipedAll] = useState(false);
   let thisDeck: Swiper<Book>;
 
   const likeProfile = async (swipedBookProfileId: string) => {
@@ -48,7 +49,7 @@ export const BookCardSwiper = (props: Props) => {
       });
   };
 
-  const onSwipeRight = async () => {
+  const swipedRight = async () => {
     try {
       const swipedBookProfileId = books[thisDeck.state.firstCardIndex].userId;
       await likeProfile(swipedBookProfileId);
@@ -62,41 +63,50 @@ export const BookCardSwiper = (props: Props) => {
   };
 
   return (
-    <Swiper
-      verticalSwipe={false}
-      backgroundColor="transparent"
-      ref={(swiper) => {
-        swiper ? (thisDeck = swiper) : null;
-      }}
-      cards={books}
-      renderCard={(book) => {
-        return (
-          <Card>
-            <CardItem cardBody>
-              <Image style={styles.cardImg} source={{ uri: book.image }} />
-            </CardItem>
-            <CardItem style={styles.cardInfo}>
-              <Body>
-                <Text>{book.title}</Text>
-                <Text>{book.author}</Text>
-                <Text>{book.distance} km away</Text>
-              </Body>
-              <Button style={styles.infoBtn}>
-                <Icon
-                  name="info"
-                  type="MaterialIcons"
-                  style={styles.infoIcon}
-                  onPress={() => Actions.detailedInfo({ book })}
-                />
-              </Button>
-            </CardItem>
-          </Card>
-        );
-      }}
-      onSwipedRight={onSwipeRight}
-      cardIndex={0}
-      stackSize={3}
-    />
+    <>
+      {swipedAll === true ? (
+        <H1 style={styles.offBooksText}>
+          Oops, it looks like you run out off books...try refreshing!
+        </H1>
+      ) : (
+        <Swiper
+          verticalSwipe={false}
+          backgroundColor="transparent"
+          ref={(swiper) => {
+            swiper ? (thisDeck = swiper) : null;
+          }}
+          cards={books}
+          renderCard={(book) => {
+            return (
+              <Card>
+                <CardItem cardBody>
+                  <Image style={styles.cardImg} source={{ uri: book.image }} />
+                </CardItem>
+                <CardItem style={styles.cardInfo}>
+                  <Body>
+                    <Text>{book.title}</Text>
+                    <Text>{book.author}</Text>
+                    <Text>{book.distance} km away</Text>
+                  </Body>
+                  <Button style={styles.infoBtn}>
+                    <Icon
+                      name="info"
+                      type="MaterialIcons"
+                      style={styles.infoIcon}
+                      onPress={() => Actions.detailedInfo({ book })}
+                    />
+                  </Button>
+                </CardItem>
+              </Card>
+            );
+          }}
+          onSwipedRight={swipedRight}
+          onSwipedAll={() => setSwipedAll(true)}
+          cardIndex={0}
+          stackSize={3}
+        />
+      )}
+    </>
   );
 };
 
@@ -122,5 +132,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginLeft: 0,
     marginRight: 0,
+  },
+  offBooksText: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    alignContent: 'center',
   },
 });
