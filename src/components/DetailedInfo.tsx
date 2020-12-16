@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Text, H1, H3, Grid, Row, Col, View } from 'native-base';
+import { Container, Text, H2, H3, Grid, Row, Col, View } from 'native-base';
 import {
   Image,
   ScrollView,
@@ -31,23 +31,21 @@ const DetailedInfo = (props: { book: Book }) => {
           }
         </Modal>
         <Grid>
-          <Row size={0.25}>
-            <Col size={0.5}>
-              <H1 style={styles.title}>{book.title}</H1>
+          <Row size={0.4}>
+            <Col size={0.5} style={styles.imgCol}>
+              <H2>{book.title}</H2>
               <H3 style={styles.author}>{book.author}</H3>
             </Col>
-            <Col size={0.5}>
+            <Col size={0.5} style={styles.imgCol}>
               <TouchableOpacity onPress={() => setModalOpen(true)}>
                 <Image style={styles.img} source={{ uri: book.image }} />
               </TouchableOpacity>
             </Col>
           </Row>
-          <Row size={0.05}>
-            <H3>Opinion</H3>
-          </Row>
-          <Row size={0.7}>
-            <Text>{book.opinion}</Text>
-          </Row>
+          <Col size={0.6}>
+            <H2>Opinion</H2>
+            <Text style={styles.opinion}>{book.opinion}</Text>
+          </Col>
         </Grid>
       </Container>
     </ScrollView>
@@ -56,9 +54,12 @@ const DetailedInfo = (props: { book: Book }) => {
 
 const styles = StyleSheet.create({
   img: {
-    width: '70%',
+    width: '80%',
     aspectRatio: 3 / 4,
     alignSelf: 'center',
+  },
+  imgCol: {
+    justifyContent: 'center',
   },
   container: {
     padding: 25,
@@ -77,9 +78,6 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: 'grey',
   },
-  title: {
-    marginTop: 40,
-  },
   author: {
     marginBottom: 20,
     marginTop: 10,
@@ -93,6 +91,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '90%',
     aspectRatio: 3 / 4,
+  },
+  opinion: {
+    textAlign: 'justify',
   },
 });
 
