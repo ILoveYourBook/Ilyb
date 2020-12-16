@@ -1,20 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
-import {
-  Body,
-  Button,
-  Card,
-  CardItem,
-  DeckSwiper,
-  Icon,
-  Text,
-} from 'native-base';
+import { Body, Button, Card, CardItem, Icon, Text } from 'native-base';
 import React from 'react';
 import { Image, StyleSheet, ToastAndroid } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
 import { Actions } from 'react-native-router-flux';
-import { LogBox } from 'react-native';
-LogBox.ignoreAllLogs();
+import Swiper from 'react-native-deck-swiper';
 
 export interface Props {
   books: Array<Book>;
@@ -23,7 +14,7 @@ export interface Props {
 
 export const BookCardSwiper = (props: Props) => {
   const { books, user } = props;
-  let thisDeck: DeckSwiper;
+  let thisDeck: Swiper<Book>;
 
   const likeProfile = async (swipedBookProfileId: string) => {
     await firestore()
@@ -59,8 +50,7 @@ export const BookCardSwiper = (props: Props) => {
 
   const onSwipeRight = async () => {
     try {
-      const swipedBookProfileId = thisDeck._root.state.selectedItem.userId;
-      books.shift();
+      const swipedBookProfileId = books[thisDeck.state.firstCardIndex].userId;
       await likeProfile(swipedBookProfileId);
       if (await itIsAMatch(swipedBookProfileId)) {
         addMatchedProfile(swipedBookProfileId);
@@ -72,18 +62,16 @@ export const BookCardSwiper = (props: Props) => {
   };
 
   return (
-    <DeckSwiper
-      ref={(deck) => {
-        deck ? (thisDeck = deck) : null;
+    <Swiper
+      verticalSwipe={false}
+      backgroundColor="transparent"
+      ref={(swiper) => {
+        swiper ? (thisDeck = swiper) : null;
       }}
-      dataSource={books}
-      onSwipeRight={onSwipeRight}
-      onSwipeLeft={() => {
-        books.shift();
-      }}
-      renderItem={(book: Book) => {
+      cards={books}
+      renderCard={(book) => {
         return (
-          <Card style={styles.card}>
+          <Card>
             <CardItem cardBody>
               <Image style={styles.cardImg} source={{ uri: book.image }} />
             </CardItem>
@@ -105,16 +93,14 @@ export const BookCardSwiper = (props: Props) => {
           </Card>
         );
       }}
+      onSwipedRight={onSwipeRight}
+      cardIndex={0}
+      stackSize={3}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    elevation: 4,
-    width: '80%',
-    aspectRatio: 3 / 4,
-  },
   cardImg: {
     width: '100%',
     aspectRatio: 3 / 4,

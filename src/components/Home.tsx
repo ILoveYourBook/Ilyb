@@ -77,14 +77,14 @@ const Home = (props: { user: User }) => {
   }, [getBooks, user]);
 
   return (
-    <Grid>
-      <ScrollView
-        contentContainerStyle={styles.scrollView}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <Row size={0.2} style={styles.instructionsRow}>
-          <Button transparent>
+    <ScrollView
+      contentContainerStyle={styles.scrollView}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
+      <Grid>
+        <Row size={0.1} style={styles.instructionsRow}>
+          <Button style={styles.button} transparent>
             <Icon
               style={styles.icon}
               name="undo"
@@ -92,7 +92,7 @@ const Home = (props: { user: User }) => {
             />
             <Text style={styles.action}>Dislike</Text>
           </Button>
-          <Button transparent>
+          <Button style={styles.button} transparent>
             <Text style={styles.action}>Like</Text>
             <Icon
               style={styles.icon}
@@ -101,27 +101,19 @@ const Home = (props: { user: User }) => {
             />
           </Button>
         </Row>
-        <View style={styles.swiperContainer}>
+        <Row size={1}>
           {books && !refreshing ? (
             <BookCardSwiper books={books} user={user} />
           ) : null}
-        </View>
-        {!refreshing ? (
-          <Text style={styles.text}>
-            Looks like you run out of books...try refreshing!
-          </Text>
-        ) : null}
-      </ScrollView>
-    </Grid>
+        </Row>
+      </Grid>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-  },
-  swiperContainer: {
-    left: '10%',
   },
   instructionsRow: {
     top: '10%',
@@ -133,13 +125,8 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 40,
   },
-  text: {
-    top: '25%',
-    left: '25%',
-    width: '50%',
-    zIndex: -1,
-    textAlign: 'center',
-    fontSize: 21,
+  button: {
+    alignSelf: 'center',
   },
 });
 
