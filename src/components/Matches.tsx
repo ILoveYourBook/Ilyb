@@ -55,8 +55,8 @@ const Matches = (props: { user: any }) => {
   return (
     <Container>
       <ScrollView>
+        <H1 style={styles.header}>Your matches</H1>
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
-          <H1 style={styles.header}>Your matches</H1>
           {matchedUsers ? (
             <List>
               {matchedUsers.map((selectedUser: User, key: number) => {
