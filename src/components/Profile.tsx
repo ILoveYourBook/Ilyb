@@ -1,6 +1,13 @@
-import { Button, Grid, H1, Icon, Row, Text, Thumbnail } from 'native-base';
+import {
+  Button,
+  Title,
+  Text,
+  IconButton,
+  Avatar,
+  Subheading,
+} from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
 import { Book } from './Home';
@@ -13,7 +20,6 @@ const Profile = (props: { user: User }) => {
 
   const fetchBooks = async () => {
     try {
-      console.log('HEY');
       const data = await firestore()
         .collection('books')
         .where('userId', '==', user.id)
@@ -30,90 +36,86 @@ const Profile = (props: { user: User }) => {
   }, [user]);
 
   return (
-    <Grid style={styles.mainGrid}>
-      <Row size={0.4}>
-        <Thumbnail style={styles.avatar} source={{ uri: user.avatarUrl }} />
-      </Row>
-      <Row size={0.075}>
-        <H1>{user.fullName}</H1>
-      </Row>
-      <Row size={0.075}>
-        <Text style={styles.bio}>{user.email}</Text>
-      </Row>
-      <Row size={0.15}>
+    <View style={styles.mainColumn}>
+      <View style={styles.avatarColumn}>
+        <Avatar.Image size={180} source={{ uri: user.avatarUrl }} />
+      </View>
+      <View style={styles.fullNameColumn}>
+        <Title>{user.fullName}</Title>
+      </View>
+      <View style={styles.emailColumn}>
+        <Subheading>{user.email}</Subheading>
+      </View>
+      <View style={styles.buttonsRow}>
         <Button
-          rounded
-          style={styles.numberOfBooksBtn}
+          icon="home"
+          mode="contained"
+          style={styles.button}
           onPress={() =>
             Actions.uploadedBooks({ selectedUser, isLoggedUser: true })
-          }>
-          <Icon name="menu-book" type="MaterialIcons" style={styles.bookIcon} />
-          <Text>Books: {uploadedBooks?.length}</Text>
-        </Button>
+          }
+          children={'Books: ' + uploadedBooks?.length}
+        />
 
         <Button
-          success
-          style={styles.addBookBtn}
-          onPress={() => Actions.uploadBook({ user })}>
-          <Icon name="add" type="MaterialIcons" style={styles.addIcon} />
-        </Button>
-      </Row>
-      <Row size={0.4} style={styles.logOutBtnRow}>
+          color="teal"
+          icon="plus"
+          mode="contained"
+          style={styles.button}
+          onPress={() => Actions.uploadBook({ user })}
+          children="Upload book"
+        />
+      </View>
+      <View style={styles.logOutBtnColumn}>
         <Button
-          danger
+          mode="contained"
+          color="red"
+          style={styles.logoutBtn}
+          children="Log out"
           onPress={() => Actions.popTo('loading')}
-          style={styles.logoutBtn}>
-          <Text>Log out</Text>
-        </Button>
-      </Row>
-    </Grid>
+        />
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  mainGrid: {
+  mainColumn: {
     padding: 20,
     flex: 1,
     alignItems: 'center',
   },
-  avatar: {
-    width: '55%',
-    aspectRatio: 1 / 1,
-    borderRadius: 100,
-    margin: 20,
+  avatarColumn: {
+    flex: 0.4,
+    justifyContent: 'center',
+  },
+  fullNameColumn: {
+    flex: 0.075,
+  },
+  emailColumn: {
+    flex: 0.075,
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+    flex: 0.1,
+  },
+  logOutBtnColumn: {
+    flex: 0.35,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    height: '50%',
+    justifyContent: 'center',
+    margin: 4,
   },
   profileInfo: {
     alignItems: 'center',
   },
-  bio: {
-    textAlign: 'center',
-    fontSize: 20,
-  },
-  numberOfBooksBtn: {
-    alignSelf: 'center',
-    margin: 5,
-  },
-  bookIcon: {
-    marginRight: 0,
-    marginLeft: 22,
-  },
-  addBookBtn: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    margin: 5,
-    height: 40,
-    width: 40,
-  },
-  addIcon: {
-    marginLeft: 0,
-    marginRight: 0,
-  },
-  logOutBtnRow: {
-    alignSelf: 'center',
-  },
+  numberOfBooksBtn: {},
+  bookIcon: {},
+  addBookBtn: {},
+  addIcon: {},
   logoutBtn: {
-    alignSelf: 'flex-end',
-    justifyContent: 'center',
     width: 320,
   },
 });
