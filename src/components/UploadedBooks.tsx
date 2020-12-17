@@ -1,19 +1,8 @@
 import firestore from '@react-native-firebase/firestore';
-import {
-  Body,
-  Button,
-  Container,
-  Content,
-  H1,
-  Left,
-  List,
-  ListItem,
-  Right,
-  Text,
-  Thumbnail,
-} from 'native-base';
+
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Avatar, Button, List, Paragraph, Title } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import { Book } from './Home';
@@ -68,48 +57,35 @@ const UploadedBooks = (props: {
     fetchBooks();
   });
 
+  const getDeteleButton = (bookKey: number) => {
+    return isLoggedUser ? (
+      <Button onPress={async () => await deleteBook(bookKey)}>
+        <Paragraph style={styles.deleteButtonText}>Delete</Paragraph>
+      </Button>
+    ) : null;
+  };
+
   const BookList = (books: Array<Book>) => {
     return (
-      <Container>
-        <H1 style={styles.header}>{splittedFullname[0]}'s books</H1>
-        <List>
-          {books.map((book, key: number) => {
-            return (
-              <ListItem
-                key={key}
-                onPress={() => Actions.detailedInfo({ book })}
-                thumbnail>
-                <Left>
-                  <Thumbnail square source={{ uri: book.image }} />
-                </Left>
-                <Body>
-                  <Text numberOfLines={1}>{book.title}</Text>
-                  <Text note numberOfLines={1}>
-                    {book.author}
-                  </Text>
-                </Body>
-                <Right>
-                  {isLoggedUser ? (
-                    <Button
-                      transparent
-                      onPress={async () => await deleteBook(key)}>
-                      <Text style={styles.deleteButtonText}>Delete</Text>
-                    </Button>
-                  ) : null}
-                </Right>
-              </ListItem>
-            );
-          })}
-        </List>
-      </Container>
+      <View>
+        <Title style={styles.header}>{splittedFullname[0]}'s books</Title>
+        {books.map((book, key: number) => {
+          return (
+            <List.Item
+              key={key}
+              onPress={() => Actions.detailedInfo({ book })}
+              title={book.title}
+              description={book.author}
+              left={() => <Avatar.Image source={{ uri: book.image }} />}
+              right={() => getDeteleButton(key)}
+            />
+          );
+        })}
+      </View>
     );
   };
 
-  return (
-    <Container>
-      <Content>{uploadedBooks ? BookList(uploadedBooks) : null}</Content>
-    </Container>
-  );
+  return <View>{uploadedBooks ? BookList(uploadedBooks) : null}</View>;
 };
 
 const styles = StyleSheet.create({
