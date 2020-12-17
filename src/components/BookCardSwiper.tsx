@@ -1,5 +1,4 @@
 import firestore from '@react-native-firebase/firestore';
-import { Body, Button, Card, CardItem, H1, Icon, Text } from 'native-base';
 import React, { useState } from 'react';
 import { Image, StyleSheet, ToastAndroid } from 'react-native';
 import { User } from '../models/User';

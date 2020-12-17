@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow */
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { Button, Container, Grid, H1, Icon, Row, Text } from 'native-base';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
