@@ -1,20 +1,9 @@
-import {
-  Body,
-  Button,
-  Right,
-  Container,
-  Left,
-  List,
-  ListItem,
-  Text,
-  Thumbnail,
-  H1,
-} from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import firestore from '@react-native-firebase/firestore';
+import { Avatar, Button, List, Title } from 'react-native-paper';
 
 const Matches = (props: { user: any }) => {
   const { user } = props;
@@ -52,54 +41,51 @@ const Matches = (props: { user: any }) => {
     fetchMatchedUsers();
   }, [user]);
 
+  const getAvatar = (selectedUser: User) => (
+    <Avatar.Image source={{ uri: selectedUser.avatarUrl }} />
+  );
+
+  const getViewBooksButton = (selectedUser: User) => (
+    <Button
+      style={styles.viewBooksBtn}
+      children="View books"
+      onPress={async () =>
+        Actions.uploadedBooks({
+          selectedUser,
+          isLoggedUser: false,
+        })
+      }
+    />
+  );
   return (
-    <Container>
+    <View>
       <ScrollView>
-        <H1 style={styles.header}>Your matches</H1>
+        <Title style={styles.header} children="Your matches" />
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
-          {matchedUsers ? (
-            <List>
-              {matchedUsers.map((selectedUser: User, key: number) => {
+          {matchedUsers
+            ? matchedUsers.map((selectedUser: User, key: number) => {
                 return (
-                  <ListItem key={key} thumbnail>
-                    <Left>
-                      <Thumbnail
-                        square
-                        source={{ uri: selectedUser.avatarUrl }}
-                      />
-                    </Left>
-                    <Body>
-                      <Text numberOfLines={1}>{selectedUser.fullName}</Text>
-                      <Text note numberOfLines={1}>
-                        {selectedUser.email}
-                      </Text>
-                    </Body>
-                    <Right>
-                      <Button
-                        transparent
-                        onPress={async () =>
-                          Actions.uploadedBooks({
-                            selectedUser,
-                            isLoggedUser: false,
-                          })
-                        }>
-                        <Text>View books</Text>
-                      </Button>
-                    </Right>
-                  </ListItem>
+                  <List.Item
+                    key={key}
+                    title={selectedUser.fullName}
+                    description={selectedUser.email}
+                    left={() => getAvatar(selectedUser)}
+                    right={() => getViewBooksButton(selectedUser)}
+                  />
                 );
-              })}
-            </List>
-          ) : null}
+              })
+            : null}
         </RefreshControl>
       </ScrollView>
-    </Container>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    margin: 20,
+    marginLeft: 20,
+    marginVertical: 20,
   },
+  viewBooksBtn: { justifyContent: 'center' },
 });
 export default Matches;
