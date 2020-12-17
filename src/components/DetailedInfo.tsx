@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container, Text, H2, H3, Grid, Row, Col, View } from 'native-base';
 import {
   Image,
   ScrollView,
@@ -7,7 +6,9 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
+import { Paragraph, Subheading } from 'react-native-paper';
 
 import { Book } from './Home';
 
@@ -16,7 +17,7 @@ const DetailedInfo = (props: { book: Book }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (
     <ScrollView>
-      <Container style={styles.container}>
+      <View style={styles.view}>
         <Modal
           transparent={true}
           animationType={'fade'}
@@ -30,29 +31,41 @@ const DetailedInfo = (props: { book: Book }) => {
             </TouchableWithoutFeedback>
           }
         </Modal>
-        <Grid>
-          <Row size={0.4}>
-            <Col size={0.5} style={styles.imgCol}>
-              <H2>{book.title}</H2>
-              <H3 style={styles.author}>{book.author}</H3>
-            </Col>
-            <Col size={0.5} style={styles.imgCol}>
+        <View>
+          <View style={styles.bookInfoRow}>
+            <View style={styles.infoCol}>
+              <Subheading>{book.title}</Subheading>
+              <Paragraph style={styles.author}>{book.author}</Paragraph>
+            </View>
+            <View style={styles.imgCol}>
               <TouchableOpacity onPress={() => setModalOpen(true)}>
                 <Image style={styles.img} source={{ uri: book.image }} />
               </TouchableOpacity>
-            </Col>
-          </Row>
-          <Col size={0.6}>
-            <H2>Opinion</H2>
-            <Text style={styles.opinion}>{book.opinion}</Text>
-          </Col>
-        </Grid>
-      </Container>
+            </View>
+          </View>
+          <View style={styles.opinionCol}>
+            <Subheading>Opinion</Subheading>
+            <Paragraph style={styles.opinion}>{book.opinion}</Paragraph>
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  bookInfoRow: {
+    flex: 0.4,
+  },
+  infoCol: {
+    flex: 0.5,
+  },
+  imgCol: {
+    flex: 0.5,
+  },
+  opinionCol: {
+    flex: 0.6,
+  },
   img: {
     width: '80%',
     aspectRatio: 3 / 4,
@@ -61,7 +74,7 @@ const styles = StyleSheet.create({
   imgCol: {
     justifyContent: 'center',
   },
-  container: {
+  view: {
     padding: 25,
   },
   backBtn: {
