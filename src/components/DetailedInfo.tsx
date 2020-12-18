@@ -55,6 +55,7 @@ const DetailedInfo = (props: { book: Book }) => {
 
 const styles = StyleSheet.create({
   bookInfoRow: {
+    flexDirection: 'row',
     flex: 0.4,
   },
   infoCol: {
@@ -67,12 +68,9 @@ const styles = StyleSheet.create({
     flex: 0.6,
   },
   img: {
-    width: '80%',
+    width: '100%',
     aspectRatio: 3 / 4,
     alignSelf: 'center',
-  },
-  imgCol: {
-    justifyContent: 'center',
   },
   view: {
     padding: 25,
