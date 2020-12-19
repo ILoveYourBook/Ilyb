@@ -1,10 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useState } from 'react';
-import { Image, StyleSheet, ToastAndroid } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { User } from '../models/User';
 import { Book } from './Home';
 import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-deck-swiper';
+import { Button, Card, IconButton, Paragraph, Title } from 'react-native-paper';
 
 export interface Props {
   books: Array<Book>;
@@ -64,9 +65,9 @@ export const BookCardSwiper = (props: Props) => {
   return (
     <>
       {swipedAll === true ? (
-        <H1 style={styles.offBooksText}>
+        <Title>
           Oops, it looks like you run out off books...try refreshing!
-        </H1>
+        </Title>
       ) : (
         <Swiper
           verticalSwipe={false}
@@ -77,25 +78,22 @@ export const BookCardSwiper = (props: Props) => {
           cards={books}
           renderCard={(book) => {
             return (
-              <Card>
-                <CardItem cardBody>
-                  <Image style={styles.cardImg} source={{ uri: book.image }} />
-                </CardItem>
-                <CardItem style={styles.cardInfo}>
-                  <Body>
-                    <Text>{book.title}</Text>
-                    <Text>{book.author}</Text>
-                    <Text>{book.distance} km away</Text>
-                  </Body>
-                  <Button style={styles.infoBtn}>
-                    <Icon
-                      name="info"
-                      type="MaterialIcons"
-                      style={styles.infoIcon}
+              <Card style={styles.card}>
+                <Card.Cover style={styles.cover} source={{ uri: book.image }} />
+                <Card.Content style={styles.content}>
+                  <View style={styles.bookInfo}>
+                    <Title numberOfLines={1}>{book.title}</Title>
+                    <Paragraph>{book.author}</Paragraph>
+                    <Paragraph>{book.distance} km away</Paragraph>
+                  </View>
+                  <Card.Actions style={styles.actions}>
+                    <IconButton
+                      icon="information-outline"
+                      size={40}
                       onPress={() => Actions.detailedInfo({ book })}
                     />
-                  </Button>
-                </CardItem>
+                  </Card.Actions>
+                </Card.Content>
               </Card>
             );
           }}
@@ -110,30 +108,20 @@ export const BookCardSwiper = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
-  cardImg: {
-    width: '100%',
-    aspectRatio: 3 / 4,
+  card: {
+    flex: 0.8,
   },
-  cardInfo: {
-    position: 'absolute',
-    bottom: 0,
-    opacity: 0.8,
+  cover: {
+    flex: 0.8,
   },
-  infoBtn: {
-    alignSelf: 'center',
+  content: {
+    flexDirection: 'row',
+    flex: 0.2,
+  },
+  bookInfo: {
+    flexDirection: 'column',
+    flex: 0.8,
     justifyContent: 'center',
-    margin: 5,
-    height: 30,
-    width: 30,
-    borderRadius: 15,
   },
-  infoIcon: {
-    fontSize: 30,
-    marginLeft: 0,
-    marginRight: 0,
-  },
-  offBooksText: {
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
+  actions: { flex: 0.2, justifyContent: 'center' },
 });

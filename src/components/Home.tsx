@@ -96,11 +96,11 @@ const Home = (props: { user: User }) => {
           children="Like"
         />
       </View>
-      {/* <View style={styles.swiper}>
-          {books && !refreshing ? (
-            <BookCardSwiper books={books} user={user} />
-          ) : null}
-        </View> */}
+      <View style={styles.swiper}>
+        {books && !refreshing ? (
+          <BookCardSwiper books={books} user={user} />
+        ) : null}
+      </View>
     </ScrollView>
   );
 };
@@ -117,11 +117,13 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '45%',
-    height: '35%',
+    height: '40%',
     justifyContent: 'center',
   },
   swiper: {
     flex: 0.8,
+    top: '-10%',
+    alignContent: 'center',
   },
 });
 
