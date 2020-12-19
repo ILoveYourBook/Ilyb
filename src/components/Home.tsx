@@ -82,21 +82,25 @@ const Home = (props: { user: User }) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <View>
-        <View style={styles.instructionsRow}>
-          <Button icon="undo" style={styles.button}>
-            <Paragraph style={styles.action}>Dislike</Paragraph>
-          </Button>
-          <Button icon="redo" style={styles.button}>
-            <Paragraph style={styles.action}>Like</Paragraph>
-          </Button>
-        </View>
-        {/* <View style={styles.swiper}>
+      <View style={styles.instructionsRow}>
+        <Button
+          mode="contained"
+          icon="undo"
+          style={styles.button}
+          children="Dislike"
+        />
+        <Button
+          mode="contained"
+          icon="redo"
+          style={styles.button}
+          children="Like"
+        />
+      </View>
+      {/* <View style={styles.swiper}>
           {books && !refreshing ? (
             <BookCardSwiper books={books} user={user} />
           ) : null}
         </View> */}
-      </View>
     </ScrollView>
   );
 };
@@ -105,22 +109,19 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  swiper: {
-    flex: 1,
-  },
   instructionsRow: {
-    flex: 0.1,
-    top: '10%',
+    flexDirection: 'row',
+    flex: 0.2,
+    alignItems: 'center',
     justifyContent: 'space-evenly',
   },
-  action: {
-    fontSize: 20,
-  },
-  icon: {
-    fontSize: 40,
-  },
   button: {
-    alignSelf: 'center',
+    width: '45%',
+    height: '35%',
+    justifyContent: 'center',
+  },
+  swiper: {
+    flex: 0.8,
   },
 });
 
