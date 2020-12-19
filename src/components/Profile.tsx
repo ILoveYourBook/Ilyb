@@ -47,15 +47,17 @@ const Profile = (props: { user: User }) => {
         <Subheading>{user.email}</Subheading>
       </View>
       <View style={styles.buttonsRow}>
-        <Button
-          icon="home"
-          mode="contained"
-          style={styles.button}
-          onPress={() =>
-            Actions.uploadedBooks({ selectedUser, isLoggedUser: true })
-          }
-          children={'Books: ' + uploadedBooks?.length}
-        />
+        {uploadedBooks ? (
+          <Button
+            icon="home"
+            mode="contained"
+            style={styles.button}
+            onPress={() =>
+              Actions.uploadedBooks({ selectedUser, isLoggedUser: true })
+            }
+            children={'Books: ' + uploadedBooks?.length}
+          />
+        ) : null}
 
         <Button
           color="teal"
