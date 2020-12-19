@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
-import { Button, Headline, TextInput } from 'react-native-paper';
+import { Button, Headline, IconButton, TextInput } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { v4 as uuid } from 'uuid';
 import { User } from '../models/User';
@@ -113,11 +113,9 @@ const UploadBookForm = (props: { user: User }) => {
           )}
         />
         <View style={styles.buttonsRow}>
-          <Button
-            mode="contained"
+          <IconButton
             icon="camera"
-            color="teal"
-            children="Take picture"
+            color="white"
             style={styles.cameraButton}
             onPress={async () => {
               await PermissionsAndroid.request(
@@ -156,10 +154,13 @@ const styles = StyleSheet.create({
   },
   galleryButton: { margin: 4 },
   cameraButton: {
+    width: '20%',
     height: '60%',
+    borderRadius: 5,
     margin: 8,
     marginRight: 0,
     justifyContent: 'center',
+    backgroundColor: 'teal',
   },
   submitButton: { height: '60%', margin: 8, justifyContent: 'center' },
   titleInput: { flex: 0.15, margin: 8, justifyContent: 'center' },
