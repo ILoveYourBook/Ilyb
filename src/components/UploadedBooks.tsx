@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, List, Paragraph, Title } from 'react-native-paper';
+import { Avatar, Button, Headline, List, Paragraph } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import { Book } from './Home';
@@ -68,7 +68,7 @@ const UploadedBooks = (props: {
   const BookList = (books: Array<Book>) => {
     return (
       <View>
-        <Title style={styles.header}>{splittedFullname[0]}'s books</Title>
+        <Headline style={styles.header}>{splittedFullname[0]}'s books</Headline>
         {books.map((book, key: number) => {
           return (
             <List.Item
@@ -90,7 +90,8 @@ const UploadedBooks = (props: {
 
 const styles = StyleSheet.create({
   header: {
-    margin: 20,
+    marginLeft: 20,
+    marginVertical: 20,
   },
   deleteButtonText: {
     color: 'red',
