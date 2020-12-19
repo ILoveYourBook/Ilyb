@@ -65,8 +65,8 @@ export const BookCardSwiper = (props: Props) => {
   return (
     <>
       {swipedAll === true ? (
-        <Title>
-          Oops, it looks like you run out off books...try refreshing!
+        <Title style={styles.outOfBooksText}>
+          Oops, it looks like you run out of books...try refreshing!
         </Title>
       ) : (
         <Swiper
@@ -124,4 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   actions: { flex: 0.2, justifyContent: 'center' },
+  outOfBooksText: {
+    textAlign: 'center',
+  },
 });

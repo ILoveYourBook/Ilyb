@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     flex: 0.8,
     top: '-10%',
     alignContent: 'center',
+    justifyContent: 'center',
   },
 });
 
