@@ -163,9 +163,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'teal',
   },
   submitButton: { height: '60%', margin: 8, justifyContent: 'center' },
-  titleInput: { flex: 0.15, margin: 8, justifyContent: 'center' },
-  authorInput: { flex: 0.15, margin: 8, justifyContent: 'center' },
-  opinionInput: { flex: 0.5, margin: 8 },
+  titleInput: {
+    flex: 0.15,
+    margin: 8,
+    marginVertical: 4,
+    justifyContent: 'center',
+  },
+  authorInput: {
+    flex: 0.15,
+    margin: 8,
+    marginVertical: 4,
+    justifyContent: 'center',
+  },
+  opinionInput: { flex: 0.5, marginVertical: 4, margin: 8 },
   buttonsRow: {
     flexDirection: 'row',
     flex: 0.2,
