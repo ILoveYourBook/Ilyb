@@ -10,9 +10,11 @@ import {
   StyleSheet,
   TextInput,
   ToastAndroid,
+  View,
 } from 'react-native';
 import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
+import { Button, Paragraph, Title } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { v4 as uuid } from 'uuid';
 import { User } from '../models/User';
@@ -51,8 +53,8 @@ const UploadBookForm = (props: { user: User }) => {
 
   return (
     <ScrollView>
-      <Container style={styles.container}>
-        <H1>Upload your book</H1>
+      <View style={styles.container}>
+        <Title>Upload your book</Title>
         {localPath ? (
           <Image style={styles.imageContainer} source={{ uri: localPath }} />
         ) : (
@@ -62,8 +64,8 @@ const UploadBookForm = (props: { user: User }) => {
           />
         )}
         {/* <Image source={require('../assets/image-preview.png')} /> */}
-        <Grid>
-          <Row size={0.15}>
+        <View>
+          <View style={styles.titleInput}>
             <Controller
               name="title"
               defaultValue=""
@@ -78,8 +80,8 @@ const UploadBookForm = (props: { user: User }) => {
               )}
               control={control}
             />
-          </Row>
-          <Row size={0.15}>
+          </View>
+          <View style={styles.authorInput}>
             <Controller
               name="author"
               defaultValue=""
@@ -94,8 +96,8 @@ const UploadBookForm = (props: { user: User }) => {
                 />
               )}
             />
-          </Row>
-          <Row size={0.3}>
+          </View>
+          <View style={styles.opinionInput}>
             <Controller
               name="opinion"
               defaultValue=""
@@ -112,9 +114,11 @@ const UploadBookForm = (props: { user: User }) => {
                 />
               )}
             />
-          </Row>
-          <Row style={styles.buttonsRow} size={0.2}>
+          </View>
+          <View style={styles.buttonsRow}>
             <Button
+              icon="camera"
+              children="Take picture"
               style={styles.cameraButton}
               onPress={async () => {
                 await PermissionsAndroid.request(
@@ -126,18 +130,16 @@ const UploadBookForm = (props: { user: User }) => {
                     setLocalPath(response.uri);
                   },
                 );
-              }}>
-              <Icon name="camera" type="MaterialCommunityIcons" />
-            </Button>
+              }}
+            />
             <Button
-              success
               style={styles.submitButton}
-              onPress={handleSubmit(onSubmit)}>
-              <Text>SUBMIT</Text>
-            </Button>
-          </Row>
-        </Grid>
-      </Container>
+              onPress={handleSubmit(onSubmit)}
+              children="Submit"
+            />
+          </View>
+        </View>
+      </View>
     </ScrollView>
   );
 };
@@ -158,6 +160,9 @@ const styles = StyleSheet.create({
   galleryButton: { margin: 4 },
   cameraButton: { backgroundColor: 'gray', margin: 4 },
   submitButton: { margin: 4 },
+  titleInput: { flex: 0.15 },
+  authorInput: { flex: 0.15 },
+  opinionInput: { flex: 0.3 },
   imageContainer: {
     alignSelf: 'center',
     width: 180,
@@ -165,6 +170,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   buttonsRow: {
+    flex: 0.2,
     alignSelf: 'flex-end',
   },
   defaultImageContainer: {
