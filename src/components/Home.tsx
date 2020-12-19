@@ -1,9 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
 import { getDistance } from 'geolib';
+import { Button, Paragraph } from 'react-native-paper';
 
 export type Book = {
   title: string;
@@ -81,31 +82,21 @@ const Home = (props: { user: User }) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <Grid>
-        <Row size={0.1} style={styles.instructionsRow}>
-          <Button style={styles.button} transparent>
-            <Icon
-              style={styles.icon}
-              name="undo"
-              type="MaterialCommunityIcons"
-            />
-            <Text style={styles.action}>Dislike</Text>
+      <View>
+        <View style={styles.instructionsRow}>
+          <Button icon="undo" style={styles.button}>
+            <Paragraph style={styles.action}>Dislike</Paragraph>
           </Button>
-          <Button style={styles.button} transparent>
-            <Text style={styles.action}>Like</Text>
-            <Icon
-              style={styles.icon}
-              name="redo"
-              type="MaterialCommunityIcons"
-            />
+          <Button icon="redo" style={styles.button}>
+            <Paragraph style={styles.action}>Like</Paragraph>
           </Button>
-        </Row>
-        <Row size={1}>
+        </View>
+        {/* <View style={styles.swiper}>
           {books && !refreshing ? (
             <BookCardSwiper books={books} user={user} />
           ) : null}
-        </Row>
-      </Grid>
+        </View> */}
+      </View>
     </ScrollView>
   );
 };
@@ -114,7 +105,11 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  swiper: {
+    flex: 1,
+  },
   instructionsRow: {
+    flex: 0.1,
     top: '10%',
     justifyContent: 'space-evenly',
   },
