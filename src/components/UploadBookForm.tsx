@@ -8,13 +8,12 @@ import {
   PermissionsAndroid,
   ScrollView,
   StyleSheet,
-  TextInput,
   ToastAndroid,
   View,
 } from 'react-native';
 import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
-import { Button, Paragraph, Title } from 'react-native-paper';
+import { Button, TextInput, Title } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { v4 as uuid } from 'uuid';
 import { User } from '../models/User';
@@ -52,92 +51,92 @@ const UploadBookForm = (props: { user: User }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Title>Upload your book</Title>
-        {localPath ? (
-          <Image style={styles.imageContainer} source={{ uri: localPath }} />
-        ) : (
-          <Image
-            style={styles.defaultImageContainer}
-            source={require('../assets/books.jpg')}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.primaryView}>
+        <View style={styles.titleView}>
+          <Title>Upload your book</Title>
+        </View>
+        <View style={styles.imgContainer}>
+          {localPath ? (
+            <Image style={styles.image} source={{ uri: localPath }} />
+          ) : (
+            <Image
+              style={styles.defaultImage}
+              source={require('../assets/books.jpg')}
+            />
+          )}
+        </View>
+      </View>
+      <View style={styles.inputsView}>
+        <Controller
+          name="title"
+          defaultValue=""
+          rules={{ required: true }}
+          render={({ onChange, value }) => (
+            <TextInput
+              style={styles.titleInput}
+              placeholder="Title"
+              value={value}
+              onChangeText={(value) => onChange(value)}
+            />
+          )}
+          control={control}
+        />
+        <Controller
+          name="author"
+          defaultValue=""
+          rules={{ required: true }}
+          control={control}
+          render={({ onChange, value }) => (
+            <TextInput
+              style={styles.authorInput}
+              placeholder="Author"
+              value={value}
+              onChangeText={(value) => onChange(value)}
+            />
+          )}
+        />
+        <Controller
+          name="opinion"
+          defaultValue=""
+          rules={{ required: true }}
+          control={control}
+          render={({ onChange, value }) => (
+            <TextInput
+              style={styles.opinionInput}
+              textAlignVertical="top"
+              multiline={true}
+              placeholder="Opinion"
+              value={value}
+              onChangeText={(value) => onChange(value)}
+            />
+          )}
+        />
+        <View style={styles.buttonsRow}>
+          <Button
+            mode="contained"
+            icon="camera"
+            color="teal"
+            children="Take picture"
+            style={styles.cameraButton}
+            onPress={async () => {
+              await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+              );
+              launchCamera(
+                { mediaType: 'photo', saveToPhotos: true },
+                (response) => {
+                  setLocalPath(response.uri);
+                },
+              );
+            }}
           />
-        )}
-        {/* <Image source={require('../assets/image-preview.png')} /> */}
-        <View>
-          <View style={styles.titleInput}>
-            <Controller
-              name="title"
-              defaultValue=""
-              rules={{ required: true }}
-              render={({ onChange, value }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="Title"
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                />
-              )}
-              control={control}
-            />
-          </View>
-          <View style={styles.authorInput}>
-            <Controller
-              name="author"
-              defaultValue=""
-              rules={{ required: true }}
-              control={control}
-              render={({ onChange, value }) => (
-                <TextInput
-                  style={styles.input}
-                  placeholder="Author"
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                />
-              )}
-            />
-          </View>
-          <View style={styles.opinionInput}>
-            <Controller
-              name="opinion"
-              defaultValue=""
-              rules={{ required: true }}
-              control={control}
-              render={({ onChange, value }) => (
-                <TextInput
-                  textAlignVertical="top"
-                  multiline={true}
-                  style={styles.input}
-                  placeholder="Opinion"
-                  value={value}
-                  onChangeText={(value) => onChange(value)}
-                />
-              )}
-            />
-          </View>
-          <View style={styles.buttonsRow}>
-            <Button
-              icon="camera"
-              children="Take picture"
-              style={styles.cameraButton}
-              onPress={async () => {
-                await PermissionsAndroid.request(
-                  PermissionsAndroid.PERMISSIONS.CAMERA,
-                );
-                launchCamera(
-                  { mediaType: 'photo', saveToPhotos: true },
-                  (response) => {
-                    setLocalPath(response.uri);
-                  },
-                );
-              }}
-            />
-            <Button
-              style={styles.submitButton}
-              onPress={handleSubmit(onSubmit)}
-              children="Submit"
-            />
-          </View>
+          <Button
+            mode="contained"
+            style={styles.submitButton}
+            onPress={handleSubmit(onSubmit)}
+            children="Submit"
+          />
         </View>
       </View>
     </ScrollView>
@@ -146,38 +145,48 @@ const UploadBookForm = (props: { user: User }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    paddingTop: 40,
+    flex: 1,
+    justifyContent: 'center',
   },
-  input: {
-    width: 260,
-    backgroundColor: 'lightgray',
-    borderRadius: 6,
-    padding: 6,
-    margin: 4,
-    fontSize: 16,
+  primaryView: { flex: 0.5, justifyContent: 'center' },
+  inputsView: {
+    flex: 0.5,
+    width: '80%',
+    alignSelf: 'center',
   },
   galleryButton: { margin: 4 },
-  cameraButton: { backgroundColor: 'gray', margin: 4 },
-  submitButton: { margin: 4 },
-  titleInput: { flex: 0.15 },
-  authorInput: { flex: 0.15 },
-  opinionInput: { flex: 0.3 },
-  imageContainer: {
-    alignSelf: 'center',
-    width: 180,
-    aspectRatio: 3 / 4,
-    margin: 20,
+  cameraButton: {
+    height: '60%',
+    margin: 8,
+    marginRight: 0,
+    justifyContent: 'center',
   },
+  submitButton: { height: '60%', margin: 8, justifyContent: 'center' },
+  titleInput: { flex: 0.15, margin: 8, justifyContent: 'center' },
+  authorInput: { flex: 0.15, margin: 8, justifyContent: 'center' },
+  opinionInput: { flex: 0.5, margin: 8 },
   buttonsRow: {
+    flexDirection: 'row',
     flex: 0.2,
-    alignSelf: 'flex-end',
+    justifyContent: 'flex-end',
   },
-  defaultImageContainer: {
+  image: {
+    height: '90%',
+    aspectRatio: 3 / 4,
+  },
+  defaultImage: {
+    height: '90%',
+    aspectRatio: 1 / 1,
+  },
+  titleView: {
+    flex: 0.2,
+    justifyContent: 'center',
     alignSelf: 'center',
-    width: 300,
-    height: 300,
-    margin: 20,
+  },
+  imgContainer: {
+    flex: 0.8,
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
 });
 
