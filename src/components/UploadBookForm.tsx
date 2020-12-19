@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import 'react-native-get-random-values';
 import { launchCamera } from 'react-native-image-picker';
-import { Button, TextInput, Title } from 'react-native-paper';
+import { Button, Headline, TextInput } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { v4 as uuid } from 'uuid';
 import { User } from '../models/User';
@@ -54,7 +54,7 @@ const UploadBookForm = (props: { user: User }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.primaryView}>
         <View style={styles.titleView}>
-          <Title>Upload your book</Title>
+          <Headline children="Upload your book" />
         </View>
         <View style={styles.imgContainer}>
           {localPath ? (

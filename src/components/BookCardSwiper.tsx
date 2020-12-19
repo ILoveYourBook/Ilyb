@@ -5,7 +5,13 @@ import { User } from '../models/User';
 import { Book } from './Home';
 import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-deck-swiper';
-import { Button, Card, IconButton, Paragraph, Title } from 'react-native-paper';
+import {
+  Card,
+  Headline,
+  IconButton,
+  Paragraph,
+  Title,
+} from 'react-native-paper';
 
 export interface Props {
   books: Array<Book>;
@@ -65,9 +71,10 @@ export const BookCardSwiper = (props: Props) => {
   return (
     <>
       {swipedAll === true ? (
-        <Title style={styles.outOfBooksText}>
-          Oops, it looks like you run out of books...try refreshing!
-        </Title>
+        <Headline
+          style={styles.outOfBooksText}
+          children="Oops, it looks like you run out of books...try refreshing!"
+        />
       ) : (
         <Swiper
           verticalSwipe={false}
@@ -82,7 +89,7 @@ export const BookCardSwiper = (props: Props) => {
                 <Card.Cover style={styles.cover} source={{ uri: book.image }} />
                 <Card.Content style={styles.content}>
                   <View style={styles.bookInfo}>
-                    <Title numberOfLines={1}>{book.title}</Title>
+                    <Title numberOfLines={1} children={book.title} />
                     <Paragraph>{book.author}</Paragraph>
                     <Paragraph>{book.distance} km away</Paragraph>
                   </View>

@@ -1,13 +1,6 @@
-import {
-  Button,
-  Title,
-  Text,
-  IconButton,
-  Avatar,
-  Subheading,
-} from 'react-native-paper';
+import { Button, Title, Avatar, Subheading } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
 import { Book } from './Home';
@@ -41,10 +34,10 @@ const Profile = (props: { user: User }) => {
         <Avatar.Image size={180} source={{ uri: user.avatarUrl }} />
       </View>
       <View style={styles.fullNameColumn}>
-        <Title>{user.fullName}</Title>
+        <Title children={user.fullName} />
       </View>
       <View style={styles.emailColumn}>
-        <Subheading>{user.email}</Subheading>
+        <Subheading children={user.email} />
       </View>
       <View style={styles.buttonsRow}>
         {uploadedBooks ? (

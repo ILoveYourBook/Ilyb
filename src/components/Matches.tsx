@@ -3,7 +3,7 @@ import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
 import firestore from '@react-native-firebase/firestore';
-import { Avatar, Button, List, Title } from 'react-native-paper';
+import { Avatar, Button, Headline, List } from 'react-native-paper';
 
 const Matches = (props: { user: any }) => {
   const { user } = props;
@@ -60,7 +60,7 @@ const Matches = (props: { user: any }) => {
   return (
     <View>
       <ScrollView>
-        <Title style={styles.header} children="Your matches" />
+        <Headline style={styles.header} children="Your matches" />
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh}>
           {matchedUsers
             ? matchedUsers.map((selectedUser: User, key: number) => {

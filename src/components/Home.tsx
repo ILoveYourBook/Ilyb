@@ -4,7 +4,7 @@ import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
 import { getDistance } from 'geolib';
-import { Button, Paragraph } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
 export type Book = {
   title: string;
