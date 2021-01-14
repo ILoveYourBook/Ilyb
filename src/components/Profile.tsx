@@ -13,7 +13,6 @@ const Profile = (props: { user: User }) => {
 
   const fetchBooks = async () => {
     try {
-      console.log('HEY');
       const data = await firestore()
         .collection('books')
         .where('userId', '==', user.id)
