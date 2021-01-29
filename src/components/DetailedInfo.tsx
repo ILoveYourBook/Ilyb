@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container, Text, H2, H3, Grid, Row, Col, View } from 'native-base';
 import {
   Image,
   ScrollView,
@@ -7,7 +6,9 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  View,
 } from 'react-native';
+import { Paragraph, Subheading, Title } from 'react-native-paper';
 
 import { Book } from './Home';
 
@@ -15,53 +16,60 @@ const DetailedInfo = (props: { book: Book }) => {
   const { book } = props;
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   return (
-    <ScrollView>
-      <Container style={styles.container}>
-        <Modal
-          transparent={true}
-          animationType={'fade'}
-          visible={modalOpen}
-          onRequestClose={() => setModalOpen(false)}>
-          {
-            <TouchableWithoutFeedback onPress={() => setModalOpen(false)}>
-              <View style={styles.modalView}>
-                <Image style={styles.modalImage} source={{ uri: book.image }} />
-              </View>
-            </TouchableWithoutFeedback>
-          }
-        </Modal>
-        <Grid>
-          <Row size={0.4}>
-            <Col size={0.5} style={styles.imgCol}>
-              <H2>{book.title}</H2>
-              <H3 style={styles.author}>{book.author}</H3>
-            </Col>
-            <Col size={0.5} style={styles.imgCol}>
-              <TouchableOpacity onPress={() => setModalOpen(true)}>
-                <Image style={styles.img} source={{ uri: book.image }} />
-              </TouchableOpacity>
-            </Col>
-          </Row>
-          <Col size={0.6}>
-            <H2>Opinion</H2>
-            <Text style={styles.opinion}>{book.opinion}</Text>
-          </Col>
-        </Grid>
-      </Container>
+    <ScrollView contentContainerStyle={styles.mainView}>
+      <Modal
+        transparent={true}
+        animationType={'fade'}
+        visible={modalOpen}
+        onRequestClose={() => setModalOpen(false)}>
+        {
+          <TouchableWithoutFeedback onPress={() => setModalOpen(false)}>
+            <View style={styles.modalView}>
+              <Image style={styles.modalImage} source={{ uri: book.image }} />
+            </View>
+          </TouchableWithoutFeedback>
+        }
+      </Modal>
+      <View style={styles.bookInfoRow}>
+        <View style={styles.imgCol}>
+          <TouchableOpacity onPress={() => setModalOpen(true)}>
+            <Image style={styles.img} source={{ uri: book.image }} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.infoCol}>
+          <Title>{book.title}</Title>
+          <Paragraph style={styles.author}>{book.author}</Paragraph>
+        </View>
+      </View>
+      <View style={styles.opinionCol}>
+        <Title>Opinion</Title>
+        <Paragraph style={styles.opinion}>{book.opinion}</Paragraph>
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  bookInfoRow: {
+    flexDirection: 'row',
+    flex: 0.3,
+  },
+  opinionCol: {
+    flex: 0.7,
+  },
+  infoCol: {
+    alignContent: 'flex-end',
+    flex: 0.5,
+  },
+  imgCol: {
+    flex: 0.5,
+  },
   img: {
     width: '80%',
     aspectRatio: 3 / 4,
-    alignSelf: 'center',
   },
-  imgCol: {
-    justifyContent: 'center',
-  },
-  container: {
+  mainView: {
+    flex: 1,
     padding: 25,
   },
   backBtn: {

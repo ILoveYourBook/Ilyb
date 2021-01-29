@@ -62,5 +62,5 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-.env.js
+env.ts
 google-services.json

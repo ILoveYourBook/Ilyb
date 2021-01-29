@@ -1,10 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
-import { Button, Grid, Icon, Row, Text } from 'native-base';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, RefreshControl, ScrollView } from 'react-native';
+import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
 import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
 import { getDistance } from 'geolib';
+import { Button } from 'react-native-paper';
 
 export type Book = {
   title: string;
@@ -26,12 +26,6 @@ const Home = (props: { user: User }) => {
     });
   };
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await fetchBooks();
-    wait(1000).then(() => setRefreshing(false));
-  }, []);
-
   const getBooks = useCallback(
     async (booksCollection: any) => {
       let booksWithDistance: Book[] = [];
@@ -49,17 +43,7 @@ const Home = (props: { user: User }) => {
     [user],
   );
 
-  const getBookOwnerLocation = async (book: Book) => {
-    const bookOwnerDocument = await firestore()
-      .collection('users')
-      .doc(book.userId)
-      .get();
-    //console.log(book.userId);
-    const bookOwnerData = bookOwnerDocument.data() as User;
-    return bookOwnerData.lastLocation;
-  };
-
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     try {
       const booksCollection = await firestore()
         .collection('books')
@@ -70,11 +54,27 @@ const Home = (props: { user: User }) => {
     } catch (error) {
       console.log(error);
     }
+  }, [getBooks, user]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchBooks();
+    wait(1000).then(() => setRefreshing(false));
+  }, [fetchBooks]);
+
+  const getBookOwnerLocation = async (book: Book) => {
+    const bookOwnerDocument = await firestore()
+      .collection('users')
+      .doc(book.userId)
+      .get();
+    //console.log(book.userId);
+    const bookOwnerData = bookOwnerDocument.data() as User;
+    return bookOwnerData.lastLocation;
   };
 
   useEffect(() => {
     fetchBooks();
-  }, [getBooks, user]);
+  }, [getBooks, user, fetchBooks]);
 
   return (
     <ScrollView
@@ -82,31 +82,25 @@ const Home = (props: { user: User }) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <Grid>
-        <Row size={0.1} style={styles.instructionsRow}>
-          <Button style={styles.button} transparent>
-            <Icon
-              style={styles.icon}
-              name="undo"
-              type="MaterialCommunityIcons"
-            />
-            <Text style={styles.action}>Dislike</Text>
-          </Button>
-          <Button style={styles.button} transparent>
-            <Text style={styles.action}>Like</Text>
-            <Icon
-              style={styles.icon}
-              name="redo"
-              type="MaterialCommunityIcons"
-            />
-          </Button>
-        </Row>
-        <Row size={1}>
-          {books && !refreshing ? (
-            <BookCardSwiper books={books} user={user} />
-          ) : null}
-        </Row>
-      </Grid>
+      <View style={styles.instructionsRow}>
+        <Button
+          mode="contained"
+          icon="undo"
+          style={styles.button}
+          children="Dislike"
+        />
+        <Button
+          mode="contained"
+          icon="redo"
+          style={styles.button}
+          children="Like"
+        />
+      </View>
+      <View style={styles.swiper}>
+        {books && !refreshing ? (
+          <BookCardSwiper books={books} user={user} />
+        ) : null}
+      </View>
     </ScrollView>
   );
 };
@@ -116,17 +110,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   instructionsRow: {
-    top: '10%',
+    flexDirection: 'row',
+    flex: 0.2,
+    alignItems: 'center',
     justifyContent: 'space-evenly',
   },
-  action: {
-    fontSize: 20,
-  },
-  icon: {
-    fontSize: 40,
-  },
   button: {
-    alignSelf: 'center',
+    width: '45%',
+    height: '40%',
+    justifyContent: 'center',
+  },
+  swiper: {
+    flex: 0.8,
+    top: '-10%',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 });
 

@@ -1,14 +1,21 @@
+import React, { useEffect, useState } from 'react';
+import { BottomNavigation } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
-import { Icon, Tab, TabHeading, Tabs } from 'native-base';
-import React, { useState } from 'react';
 import { User } from '../models/User';
-import Matches from './Matches';
 import Home from './Home';
+import Matches from './Matches';
 import Profile from './Profile';
 
 const NavigationTabs = (props: { user: User }) => {
   const [user, setUser] = useState<User>(props.user);
 
+  const ProfileRoute = () => {
+    return user ? <Profile user={user} /> : null;
+  };
+  const HomeRoute = () => {
+    return user ? <Home user={user} /> : null;
+  };
+  const MatchesRoute = () => <Matches user={user} />;
   const fetchUser = async () => {
     const userDocument = await firestore()
       .collection('users')
@@ -18,33 +25,29 @@ const NavigationTabs = (props: { user: User }) => {
     setUser(userData);
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'profile', title: 'Profile', icon: 'account' },
+    { key: 'home', title: 'Home', icon: 'home' },
+    { key: 'matches', title: 'Matches', icon: 'star' },
+  ]);
+
+  const renderScene = BottomNavigation.SceneMap({
+    profile: ProfileRoute,
+    home: HomeRoute,
+    matches: MatchesRoute,
+  });
+
   return (
-    <Tabs initialPage={1} onChangeTab={fetchUser} locked>
-      <Tab
-        heading={
-          <TabHeading>
-            <Icon name="account-circle" type="MaterialIcons" />
-          </TabHeading>
-        }>
-        {user ? <Profile user={user} /> : null}
-      </Tab>
-      <Tab
-        heading={
-          <TabHeading>
-            <Icon name="home" type="MaterialIcons" />
-          </TabHeading>
-        }>
-        {user ? <Home user={user} /> : null}
-      </Tab>
-      <Tab
-        heading={
-          <TabHeading>
-            <Icon name="star" type="MaterialCommunityIcons" />
-          </TabHeading>
-        }>
-        <Matches user={user} />
-      </Tab>
-    </Tabs>
+    <BottomNavigation
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+    />
   );
 };
 
