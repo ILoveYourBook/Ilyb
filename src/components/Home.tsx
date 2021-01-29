@@ -26,12 +26,6 @@ const Home = (props: { user: User }) => {
     });
   };
 
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await fetchBooks();
-    wait(1000).then(() => setRefreshing(false));
-  }, []);
-
   const getBooks = useCallback(
     async (booksCollection: any) => {
       let booksWithDistance: Book[] = [];
@@ -49,17 +43,7 @@ const Home = (props: { user: User }) => {
     [user],
   );
 
-  const getBookOwnerLocation = async (book: Book) => {
-    const bookOwnerDocument = await firestore()
-      .collection('users')
-      .doc(book.userId)
-      .get();
-    //console.log(book.userId);
-    const bookOwnerData = bookOwnerDocument.data() as User;
-    return bookOwnerData.lastLocation;
-  };
-
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     try {
       const booksCollection = await firestore()
         .collection('books')
@@ -70,11 +54,27 @@ const Home = (props: { user: User }) => {
     } catch (error) {
       console.log(error);
     }
+  }, [getBooks, user]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchBooks();
+    wait(1000).then(() => setRefreshing(false));
+  }, [fetchBooks]);
+
+  const getBookOwnerLocation = async (book: Book) => {
+    const bookOwnerDocument = await firestore()
+      .collection('users')
+      .doc(book.userId)
+      .get();
+    //console.log(book.userId);
+    const bookOwnerData = bookOwnerDocument.data() as User;
+    return bookOwnerData.lastLocation;
   };
 
   useEffect(() => {
     fetchBooks();
-  }, [getBooks, user]);
+  }, [getBooks, user, fetchBooks]);
 
   return (
     <ScrollView

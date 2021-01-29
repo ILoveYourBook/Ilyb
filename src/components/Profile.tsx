@@ -1,17 +1,17 @@
-import { Button, Title, Avatar, Subheading } from 'react-native-paper';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import firestore from '@react-native-firebase/firestore';
-import { Book } from './Home';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Avatar, Button, Subheading, Title } from 'react-native-paper';
+import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
+import { Book } from './Home';
 
 const Profile = (props: { user: User }) => {
   const { user } = props;
   const selectedUser = user;
   const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
 
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     try {
       const data = await firestore()
         .collection('books')
@@ -22,11 +22,11 @@ const Profile = (props: { user: User }) => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchBooks();
-  }, [user]);
+  }, [fetchBooks]);
 
   return (
     <View style={styles.mainColumn}>
