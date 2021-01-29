@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import faker from 'faker';
 import React from 'react';
-import Profile from './Profile';
+import Profile from '../../src/components/Profile';
 
 describe('Profile component', () => {
   const defaultProps = {
