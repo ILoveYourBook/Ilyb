@@ -1,7 +1,7 @@
 import { GoogleSignin } from '@react-native-community/google-signin';
 import React, { useEffect } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
-import { env } from './.env';
+import { env } from './env';
 import DetailedInfo from './src/components/DetailedInfo';
 import NavigationTabs from './src/components/NavigationTabs';
 import SignIn from './src/components/SignIn';
