@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import { loadOwnedBooksAction } from '../actions/LoadOwnedBooksAction';
-import { loadUserAction } from '../actions/LoadUserAction';
-import { Book } from '../models/Book';
-import { User } from '../models/User';
+import { loadOwnedBooksAction } from '../redux/actions/LoadOwnedBooksAction';
+import { loadUserAction } from '../redux/actions/LoadUserAction';
+import { Book } from '../types/Book';
+import { User } from '../types/User';
 import SignIn from './SignIn';
 
 const mapStateToProps = (state) => {

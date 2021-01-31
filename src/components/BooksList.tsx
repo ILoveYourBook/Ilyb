@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Button, Headline, List, Paragraph } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
-import { Book } from '../models/Book';
-import { User } from '../models/User';
+import { Book } from '../types/Book';
+import { User } from '../types/User';
 
 type Props = {
   user: User;

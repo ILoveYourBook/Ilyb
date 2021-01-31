@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Avatar, Button, Headline, List } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
-import { User } from '../models/User';
+import { User } from '../types/User';
 import { fetchBooksForUser } from '../requests/FetchBooksForUser';
 import { fetchMatchedUsers } from '../requests/FetchMatchesForUser';
 

@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import { Actions } from 'react-native-router-flux';
-import { Book } from '../models/Book';
-import { User } from '../models/User';
+import { Book } from '../types/Book';
+import { User } from '../types/User';
 
 type Props = {
   user: User;

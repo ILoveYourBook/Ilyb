@@ -3,9 +3,9 @@ import { getDistance } from 'geolib';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
-import { User } from '../models/User';
+import { User } from '../types/User';
 import { BookCardSwiper } from './BookCardSwiper';
-import { Book } from '../models/Book';
+import { Book } from '../types/Book';
 
 const Home = (props: { user: User }) => {
   const { user } = props;

@@ -1,4 +1,4 @@
-import { Book } from '../models/Book';
+import { Book } from '../../types/Book';
 import { LOAD_OWNED_BOOKS_ACTION } from '../constants';
 
 export const loadOwnedBooksAction = (books: Array<Book>) => ({

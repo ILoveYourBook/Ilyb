@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { User } from '../models/User';
+import { User } from '../types/User';
 
 export const fetchMatchedUsers = async (user: User) => {
   try {

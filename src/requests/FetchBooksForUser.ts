@@ -1,5 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
-import { Book } from '../models/Book';
+import { Book } from '../types/Book';
 
 export const fetchBooksForUser = async (userId: string) => {
   try {

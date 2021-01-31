@@ -9,8 +9,8 @@ import DetailedInfo from './src/components/DetailedInfo';
 import NavigationTabs from './src/components/NavigationTabs';
 import SignInContainer from './src/components/SignInContainer';
 import UploadBookForm from './src/components/UploadBookForm';
-import { ownedBooksReducer } from './src/reducers/OwnedBooksReducer';
-import { userReducer } from './src/reducers/UserReducer';
+import { ownedBooksReducer } from './src/redux/reducers/OwnedBooksReducer';
+import { userReducer } from './src/redux/reducers/UserReducer';
 
 const App = () => {
   useEffect(() => {
