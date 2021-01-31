@@ -4,7 +4,7 @@ import {
   User as SignedInUser,
 } from '@react-native-community/google-signin';
 import firestore from '@react-native-firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   PermissionsAndroid,
@@ -12,15 +12,22 @@ import {
   Text,
   View,
 } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { User } from '../models/User';
 import Geolocation from 'react-native-geolocation-service';
+import { Actions } from 'react-native-router-flux';
+import { Book } from '../models/Book';
+import { User } from '../models/User';
 
-const SignIn = () => {
-  const [user, setUser] = useState<User>();
+type Props = {
+  user: User;
+  loadUser(user: User): void;
+  loadOwnedBooks(books: Array<Book>): void;
+};
+
+const SignIn = (props: Props) => {
+  const { user, loadUser, loadOwnedBooks } = props;
 
   useEffect(() => {
-    user ? Actions.nav({ user }) : null;
+    Object.keys(user).length ? Actions.nav({ user }) : null;
   }, [user]);
 
   const signInWithGoogle = async () => {
@@ -39,7 +46,21 @@ const SignIn = () => {
       ? (currentUser = await getUserFromId(id))
       : (currentUser = await createNewUser({ id, email, fullName, avatarUrl }));
     await saveUserLocation(id);
-    setUser(currentUser);
+    loadUser(currentUser);
+    await fetchBooks(currentUser);
+  };
+
+  const fetchBooks = async (user: User) => {
+    try {
+      const data = await firestore()
+        .collection('books')
+        .where('userId', '==', user.id)
+        .get();
+      const arrayData = data.docs.map((document) => document.data() as Book);
+      loadOwnedBooks(arrayData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const existsUserWithId = async (id: string) => {
