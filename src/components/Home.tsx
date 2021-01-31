@@ -1,19 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
+import { getDistance } from 'geolib';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, RefreshControl, ScrollView, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { Button } from 'react-native-paper';
 import { User } from '../models/User';
 import { BookCardSwiper } from './BookCardSwiper';
-import { getDistance } from 'geolib';
-import { Button } from 'react-native-paper';
-
-export type Book = {
-  title: string;
-  author: string;
-  image: string;
-  userId: string;
-  opinion: string;
-  distance?: number;
-};
+import { Book } from '../models/Book';
 
 const Home = (props: { user: User }) => {
   const { user } = props;
@@ -67,7 +59,6 @@ const Home = (props: { user: User }) => {
       .collection('users')
       .doc(book.userId)
       .get();
-    //console.log(book.userId);
     const bookOwnerData = bookOwnerDocument.data() as User;
     return bookOwnerData.lastLocation;
   };
@@ -96,7 +87,7 @@ const Home = (props: { user: User }) => {
           children="Like"
         />
       </View>
-      <View style={styles.swiper}>
+      <View testID="swiper-view" style={styles.swiper}>
         {books && !refreshing ? (
           <BookCardSwiper books={books} user={user} />
         ) : null}

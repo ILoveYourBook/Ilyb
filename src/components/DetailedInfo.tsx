@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import {
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Modal,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { Paragraph, Subheading, Title } from 'react-native-paper';
-
+import { Paragraph, Title } from 'react-native-paper';
 import { Book } from './Home';
 
 const DetailedInfo = (props: { book: Book }) => {
@@ -25,7 +24,11 @@ const DetailedInfo = (props: { book: Book }) => {
         {
           <TouchableWithoutFeedback onPress={() => setModalOpen(false)}>
             <View style={styles.modalView}>
-              <Image style={styles.modalImage} source={{ uri: book.image }} />
+              <Image
+                testID="book-image"
+                style={styles.modalImage}
+                source={{ uri: book.image }}
+              />
             </View>
           </TouchableWithoutFeedback>
         }
