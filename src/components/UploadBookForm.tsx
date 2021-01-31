@@ -16,8 +16,8 @@ import { launchCamera } from 'react-native-image-picker';
 import { Button, Headline, IconButton, TextInput } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { v4 as uuid } from 'uuid';
+import { Book } from '../models/Book';
 import { User } from '../models/User';
-import { Book } from './Home';
 
 const UploadBookForm = (props: { user: User }) => {
   const { user } = props;

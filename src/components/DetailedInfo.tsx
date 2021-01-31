@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { Paragraph, Title } from 'react-native-paper';
-import { Book } from './Home';
+import { Book } from '../models/Book';
 
 const DetailedInfo = (props: { book: Book }) => {
   const { book } = props;

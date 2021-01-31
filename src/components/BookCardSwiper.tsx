@@ -1,9 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useState } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
-import { User } from '../models/User';
-import { Book } from './Home';
-import { Actions } from 'react-native-router-flux';
 import Swiper from 'react-native-deck-swiper';
 import {
   Card,
@@ -12,6 +9,9 @@ import {
   Paragraph,
   Title,
 } from 'react-native-paper';
+import { Actions } from 'react-native-router-flux';
+import { Book } from '../models/Book';
+import { User } from '../models/User';
 
 export interface Props {
   books: Array<Book>;
