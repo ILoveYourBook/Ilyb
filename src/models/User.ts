@@ -5,5 +5,5 @@ export type User = {
   avatarUrl: string;
   likedProfileIds: Array<string>;
   matchedProfileIds: Array<string>;
-  lastLocation: {latitude: number; longitude: number};
+  lastLocation: { latitude: number; longitude: number };
 };

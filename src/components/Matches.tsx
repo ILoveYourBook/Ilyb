@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { Avatar, Button, Headline, List } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
 import { User } from '../models/User';
-import firestore from '@react-native-firebase/firestore';
-import { Avatar, Button, Headline, List } from 'react-native-paper';
+import { fetchBooksForUser } from '../requests/FetchBooksForUser';
+import { fetchMatchedUsers } from '../requests/FetchMatchesForUser';
 
 const Matches = (props: { user: any }) => {
   const { user } = props;
-
   const [matchedUsers, setMatchedUsers] = useState<Array<User>>();
-
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const wait = (timeout: number) => {
     return new Promise((resolve) => {
@@ -18,41 +17,34 @@ const Matches = (props: { user: any }) => {
     });
   };
 
-  const onRefresh = React.useCallback(async () => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchMatchedUsers();
+    await fetchMatchedUsers(user);
     wait(1000).then(() => setRefreshing(false));
-  }, []);
-
-  const fetchMatchedUsers = async () => {
-    try {
-      const data = await firestore()
-        .collection('users')
-        .where('id', 'in', user.matchedProfileIds)
-        .get();
-      const arrayData = data.docs.map((document) => document.data() as User);
-      setMatchedUsers(arrayData);
-    } catch (error) {
-      throw error;
-    }
-  };
+  }, [user]);
 
   useEffect(() => {
-    fetchMatchedUsers();
+    async function fetchMatches() {
+      const fetchedMatchedUsers = await fetchMatchedUsers(user);
+      setMatchedUsers(fetchedMatchedUsers);
+    }
+    fetchMatches();
   }, [user]);
 
   const getAvatar = (selectedUser: User) => (
     <Avatar.Image source={{ uri: selectedUser.avatarUrl }} />
   );
 
-  const getViewBooksButton = (selectedUser: User) => (
+  const getViewBooksButton = (key: Number, selectedUser: User) => (
     <Button
+      testID={'view-books-button-' + key}
       style={styles.viewBooksBtn}
       children="View books"
       onPress={async () =>
-        Actions.uploadedBooks({
-          selectedUser,
-          isLoggedUser: false,
+        Actions.booksList({
+          user: selectedUser,
+          booksToShow: await fetchBooksForUser(selectedUser.id),
+          isOwner: false,
         })
       }
     />
@@ -66,11 +58,12 @@ const Matches = (props: { user: any }) => {
             ? matchedUsers.map((selectedUser: User, key: number) => {
                 return (
                   <List.Item
+                    testID={'user' + key}
                     key={key}
                     title={selectedUser.fullName}
                     description={selectedUser.email}
                     left={() => getAvatar(selectedUser)}
-                    right={() => getViewBooksButton(selectedUser)}
+                    right={() => getViewBooksButton(key, selectedUser)}
                   />
                 );
               })

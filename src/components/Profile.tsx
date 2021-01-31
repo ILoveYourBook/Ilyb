@@ -1,37 +1,26 @@
-import firestore from '@react-native-firebase/firestore';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, Button, Subheading, Title } from 'react-native-paper';
 import { Actions } from 'react-native-router-flux';
+import { Book } from '../models/Book';
 import { User } from '../models/User';
-import { Book } from './Home';
 
-const Profile = (props: { user: User }) => {
-  const { user } = props;
-  const selectedUser = user;
-  const [uploadedBooks, setUploadedBooks] = useState<Array<Book>>();
+type Props = {
+  user: User;
+  ownedBooks: Array<Book>;
+};
 
-  const fetchBooks = useCallback(async () => {
-    try {
-      const data = await firestore()
-        .collection('books')
-        .where('userId', '==', user.id)
-        .get();
-      const arrayData = data.docs.map((document) => document.data() as Book);
-      setUploadedBooks(arrayData);
-    } catch (error) {
-      console.log(error);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    fetchBooks();
-  }, [fetchBooks]);
+const Profile = (props: Props) => {
+  const { user, ownedBooks } = props;
 
   return (
     <View style={styles.mainColumn}>
       <View style={styles.avatarColumn}>
-        <Avatar.Image size={180} source={{ uri: user.avatarUrl }} />
+        <Avatar.Image
+          testID="user-avatar"
+          size={180}
+          source={{ uri: user.avatarUrl }}
+        />
       </View>
       <View style={styles.fullNameColumn}>
         <Title children={user.fullName} />
@@ -40,15 +29,19 @@ const Profile = (props: { user: User }) => {
         <Subheading children={user.email} />
       </View>
       <View style={styles.buttonsRow}>
-        {uploadedBooks ? (
+        {ownedBooks ? (
           <Button
             icon="home"
             mode="contained"
             style={styles.button}
             onPress={() =>
-              Actions.uploadedBooks({ selectedUser, isLoggedUser: true })
+              Actions.booksList({
+                user,
+                booksToShow: ownedBooks,
+                isOwner: true,
+              })
             }
-            children={'Books: ' + uploadedBooks?.length}
+            children={'Books: ' + ownedBooks.length}
           />
         ) : null}
 

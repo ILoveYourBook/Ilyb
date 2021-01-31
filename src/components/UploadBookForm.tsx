@@ -61,6 +61,7 @@ const UploadBookForm = (props: { user: User }) => {
             <Image style={styles.image} source={{ uri: localPath }} />
           ) : (
             <Image
+              testID="placeholder-image"
               style={styles.defaultImage}
               source={require('../assets/books.jpg')}
             />
@@ -114,6 +115,7 @@ const UploadBookForm = (props: { user: User }) => {
         />
         <View style={styles.buttonsRow}>
           <IconButton
+            testID="camera-button"
             icon="camera"
             color="white"
             style={styles.cameraButton}
@@ -130,6 +132,7 @@ const UploadBookForm = (props: { user: User }) => {
             }}
           />
           <Button
+            testID="submit-button"
             mode="contained"
             style={styles.submitButton}
             onPress={handleSubmit(onSubmit)}
